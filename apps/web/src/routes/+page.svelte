@@ -15,7 +15,7 @@
 	</pre>
 	<div>
 		<section>
-			<h2>API Status</h2>
+			<h2>API StatuS</h2>
 		</section>
 	</div>
 </div>
