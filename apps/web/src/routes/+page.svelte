@@ -1,22 +1,11 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
+    import { onMount } from 'svelte';
+    import { PUBLIC_API_URL } from '$env/static/public';
 
-	let users = $state<unknown>(null);
+    let users = $state<unknown>(null);
 
-	onMount(async () => {
-		const response = await fetch(`${import.meta.env.VITE_API_URL}/api/users`);
-
-		users = await response.json();
-	});
+    onMount(async () => {
+        const response = await fetch(`${PUBLIC_API_URL}/users`);
+        users = await response.json();
+    });
 </script>
-
-<div>
-	<pre>
-		{JSON.stringify(users, null, 2)}
-	</pre>
-	<div>
-		<section>
-			<h2>API Status</h2>
-		</section>
-	</div>
-</div>
