@@ -1,20 +1,15 @@
 <script lang="ts">
   import { onMount } from 'svelte';
-
-  let users = $state<unknown>(null);
+  let organization: string | null = null;
 
   onMount(async () => {
-    const response = await fetch('/api/users');
-    users = await response.json();
+    const res = await fetch(import.meta.env.VITE_API_URL);
+    const json = await res.json();
+    organization = json.organization;
   });
 </script>
 
-<div>
-  <h1>Hello TdA</h1> <!-- přidaný text -->
-  <pre>{JSON.stringify(users, null, 2)}</pre>
-  <div>
-    <section>
-      <h2>API Status</h2>
-    </section>
-  </div>
-</div>
+<h1>Hello TdA</h1>
+{#if organization}
+  <p>Organization: {organization}</p>
+{/if}
