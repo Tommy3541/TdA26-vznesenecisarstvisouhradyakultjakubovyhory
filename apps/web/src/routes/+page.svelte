@@ -1,33 +1,20 @@
 <script lang="ts">
-    import { onMount } from 'svelte';
+  import { onMount } from 'svelte';
 
-    let users: unknown = null;
-    let loading = true;
-    let error: string | null = null;
+  let users = $state<unknown>(null);
 
-    onMount(async () => {
-        try {
-            const response = await fetch('/api/users');
-            if (!response.ok) throw new Error(`HTTP ${response.status}`);
-            users = await response.json();
-        } catch (err) {
-            error = String(err);
-        } finally {
-            loading = false;
-        }
-    });
+  onMount(async () => {
+    const response = await fetch('/api/users');
+    users = await response.json();
+  });
 </script>
 
 <div>
-    {#if loading}
-        <p>Načítám data...</p>
-    {:else if error}
-        <p style="color: red">Chyba: {error}</p>
-    {:else}
-        <pre>{JSON.stringify(users, null, 2)}</pre>
-    {/if}
-
+  <h1>Hello TdA</h1> 
+  <pre>{JSON.stringify(users, null, 2)}</pre>
+  <div>
     <section>
-        <h2>API StatuS</h2>
+      <h2>API Status</h2>
     </section>
+  </div>
 </div>
