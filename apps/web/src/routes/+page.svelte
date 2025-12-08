@@ -5,7 +5,7 @@
   let organization: string | null = null;
 
   onMount(async () => {
-    const res = await fetch(import.meta.env.VITE_API_URL);
+    const res = await fetch('/api');
     const json = await res.json();
     organization = json.organization;
     console.log("Testovací print, organizace: ")
