@@ -6,15 +6,13 @@ containers:
     port: 3001
     env:
       VITE_API_URL: https://vznesene-cisarstvi-souhrady-a-kult-jakubovy-hory-2730.tourde.app/api
-    deps:
-      - server
+    
   - name: server
     image: registry.tourde.cloud/vznesene-cisarstvi-souhrady-a-kult-jakubovy-hory-2730/server
     port: 3000
     env:
       DATABASE_URL: mysql://root:password@mysql:3306/tda_app
-    deps:
-      - mysql
+    
   - name: mysql
     image: mysql
     tag: "8.0"
@@ -25,9 +23,7 @@ containers:
   - name: caddy
     image: registry.tourde.cloud/vznesene-cisarstvi-souhrady-a-kult-jakubovy-hory-2730/caddy
     port: 80
-    deps:
-      - web
-      - server
+   
 build:
   - name: web
     context: ./apps/web
