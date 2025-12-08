@@ -23,9 +23,7 @@ containers:
   - name: caddy
     image: registry.tourde.cloud/vznesene-cisarstvi-souhrady-a-kult-jakubovy-hory-2730/caddy
     port: 80
-    links:
-      - web
-      - server
+   
       
    
 build:
