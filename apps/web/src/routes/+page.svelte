@@ -10,6 +10,6 @@
 </script>
 
 <h1>Hello TdA</h1>
-{#if organization}
   <p>Organization: {organization}</p>
-{/if}
+<p>test api</p>
+
