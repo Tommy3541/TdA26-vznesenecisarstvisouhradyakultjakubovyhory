@@ -28,6 +28,8 @@ build:
   - name: web
     context: ./apps/web
     dockerfile: ./apps/web/Dockerfile
+    args:
+      VITE_API_URL: https://vznesene-cisarstvi-souhrady-a-kult-jakubovy-hory-2730.tourde.app/api
   - name: server
     context: ./apps/server
     dockerfile: ./apps/server/Dockerfile
