@@ -8,6 +8,8 @@
     const res = await fetch(import.meta.env.VITE_API_URL);
     const json = await res.json();
     organization = json.organization;
+    console.log("Testovací print, organizace: ")
+    console.log(organization)
   });
 </script>
 
