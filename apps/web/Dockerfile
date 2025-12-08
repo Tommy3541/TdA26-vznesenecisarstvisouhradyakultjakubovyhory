@@ -12,6 +12,10 @@ RUN npm i
 
 FROM base AS builder
 WORKDIR /app
+
+ARG VITE_API_URL
+ENV VITE_API_URL=$VITE_API_URL
+
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
@@ -39,5 +43,4 @@ ENV HOST="0.0.0.0"
 
 CMD ["node", "build"]
 
-ARG VITE_API_URL
-ENV VITE_API_URL=$VITE_API_URL
+
