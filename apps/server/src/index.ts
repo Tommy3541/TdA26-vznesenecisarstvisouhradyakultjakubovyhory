@@ -13,7 +13,7 @@ app.use(express.json());
 // API router
 const apiRoutes = express.Router();
 
-// ✅ Opravený výstup podle zadání
+//  Opravený výstup podle zadání
 apiRoutes.get("/", (_req, res) => {
     res.json({ organization: "Student Cyber Games" });
 });
