@@ -5,7 +5,7 @@
   let organization: string | null = null;
 
   onMount(async () => {
-    const res = await fetch('/api/https://vznesene-cisarstvi-souhrady-a-kult-jakubovy-hory-2730.tourde.app');
+    const res = await fetch('https://vznesene-cisarstvi-souhrady-a-kult-jakubovy-hory-2730.tourde.app');
     const json = await res.json();
     organization = json.organization;
     console.log("Testovací print, organizace: ")
