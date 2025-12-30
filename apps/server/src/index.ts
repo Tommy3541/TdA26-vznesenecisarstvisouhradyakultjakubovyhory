@@ -23,12 +23,13 @@ apiRoutes.get("/", (_req, res) => {
 // Další endpointy
 apiRoutes.use("/users", userRoutes);
 
+apiRoutes.use("/courses", courseRoutes);
+
 // Registrace routeru
 app.use("/api", apiRoutes);
 
 
-//courses ořímo na app
-app.use("/courses", courseRoutes);
+
 
 // ✅ Retry logika pro čekání na databázi
 async function waitForDatabase() {
