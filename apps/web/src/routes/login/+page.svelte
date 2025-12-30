@@ -1,10 +1,10 @@
 <script>
+  // Tato proměnná přijímá data z +page.server.js
+  export let form;
+
   let username = "";
   let password = "";
 
-  function handleLogin() {
-    console.log("Přihlašování:", { username, password });
-  }
 </script>
 
 <div class="header-area">
@@ -21,14 +21,20 @@
     <h2>Přihlášení</h2>
     <p class="subtitle">Vítejte v TdA Education</p>
 
-    <form on:submit|preventDefault={handleLogin}>
+    <form method="POST">
+      
+      {#if form?.error}
+        <p class="error-msg">{form.error}</p>
+      {/if}
+
       <div class="input-group">
         <label for="username">Uživatelské jméno</label>
         <input 
           type="text" 
           id="username" 
+          name="username" 
           bind:value={username} 
-          placeholder="Zadejte jméno" 
+          placeholder="lecturer" 
           required 
         />
       </div>
@@ -38,6 +44,7 @@
         <input 
           type="password" 
           id="password" 
+          name="password" 
           bind:value={password} 
           placeholder="••••••••" 
           required 
@@ -190,5 +197,14 @@
 
   .register-link a:hover {
     text-decoration: underline;
+  }
+  .error-msg {
+    color: #d32f2f;
+    background-color: #fdecea;
+    padding: 0.5rem;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    margin-bottom: 1rem;
+    border: 1px solid #f5c6cb;
   }
 </style>
