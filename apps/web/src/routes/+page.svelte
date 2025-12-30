@@ -63,7 +63,7 @@
             </div>
 
 
-            <div class="login">Přihlásit se</div>
+            <a href="/login" class="login">Přihlásit se</a>
             </div>
 
             <div class="section section-quote">
