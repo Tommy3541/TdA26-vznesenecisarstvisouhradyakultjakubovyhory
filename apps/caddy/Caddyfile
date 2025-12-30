@@ -1,8 +1,5 @@
 http://:80 {
-    # Vše co začíná /api, pošli na Express (port 3000)
-    reverse_proxy /api* 127.0.0.1:3000
-    reverse_proxy /api/ 127.0.0.1:3000
-
-    #pošli na SvelteKit (port 3001)
+    reverse_proxy /api 127.0.0.1:3000
+    reverse_proxy /api/* 127.0.0.1:3000
     reverse_proxy * 127.0.0.1:3001
 }
