@@ -1,5 +1,8 @@
 http://:80 {
-    reverse_proxy /api 127.0.0.1:3000
-    reverse_proxy /api/* 127.0.0.1:3000
+    # Vše co začíná /api nebo /courses pošli na Express (backend)
+    reverse_proxy /api* 127.0.0.1:3000
+    reverse_proxy /courses* 127.0.0.1:3000
+
+    # Všechno ostatní pošli na SvelteKit (frontend)
     reverse_proxy * 127.0.0.1:3001
 }

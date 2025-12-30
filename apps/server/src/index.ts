@@ -3,6 +3,7 @@ import cors from "cors";
 import express from "express";
 import { initDatabase } from "./db/init.js";
 import { userRoutes } from "./routes/users.js";
+import { courseRoutes } from "./routes/courses.js"
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -21,6 +22,8 @@ apiRoutes.get("/", (_req, res) => {
 
 // Další endpointy
 apiRoutes.use("/users", userRoutes);
+
+apiRoutes.use("/courses", courseRoutes);
 
 // Registrace routeru
 app.use("/api", apiRoutes);
