@@ -15,15 +15,17 @@ app.use(express.json());
 // API router
 const apiRoutes = express.Router();
 
-// ✅ Výstup podle zadání Tour de App
-apiRoutes.get("/", (_req, res) => {
-    res.json({ organization: "Student Cyber Games" });
-});
+
 
 // Další endpointy
 apiRoutes.use("/users", userRoutes);
 
 apiRoutes.use("/courses", courseRoutes);
+
+// ✅ Výstup podle zadání Tour de App
+apiRoutes.get("/", (_req, res) => {
+    res.json({ organization: "Student Cyber Games" });
+});
 
 // Registrace routeru
 app.use("/api", apiRoutes);
