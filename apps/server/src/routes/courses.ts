@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { pool } from "../db/index.js";
+// @ts-ignore
 import { v4 as uuidv4 } from "uuid"; 
 
 export const courseRoutes = Router();
@@ -14,18 +15,16 @@ courseRoutes.get("/", async (req, res) => {
     }
 });
 
-// 2. Vytvoření kurzu (Zde padal test POST)
+// 2. Vytvoření kurzu
 courseRoutes.post("/", async (req, res) => {
     const { name, description } = req.body;
-    const uuid = uuidv4(); // Bot vyžaduje UUID
+    const uuid = uuidv4(); 
 
     try {
         await pool.execute(
             "INSERT INTO courses (uuid, name, description) VALUES (?, ?, ?)",
             [uuid, name, description]
         );
-        
-        // Bot chce zpátky objekt vytvořeného kurzu
         res.status(201).json({ uuid, name, description });
     } catch (err) {
         res.status(500).json({ error: "Failed to create course" });
@@ -61,7 +60,7 @@ courseRoutes.put("/:uuid", async (req, res) => {
 courseRoutes.delete("/:uuid", async (req, res) => {
     try {
         await pool.execute("DELETE FROM courses WHERE uuid = ?", [req.params.uuid]);
-        res.status(204).send(); // 204 No Content je pro smazání standard
+        res.status(204).send(); 
     } catch (err) {
         res.status(500).json({ error: "Failed to delete" });
     }
