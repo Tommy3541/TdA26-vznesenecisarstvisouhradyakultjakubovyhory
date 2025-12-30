@@ -1,3 +1,4 @@
+import { pool } from "./index.js";
 export async function initDatabase() {
     try {
         console.log("Initializing database schema...");
