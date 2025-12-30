@@ -211,6 +211,9 @@
         border: 1px solid #4fc3f7;
         border-radius: 20px;
         transition: all 0.3s ease;
+        color: inherit;
+        text-decoration: none;
+        
         }
 
 
