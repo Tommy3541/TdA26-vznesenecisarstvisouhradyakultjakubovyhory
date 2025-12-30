@@ -3,10 +3,18 @@
   let password = "";
 
   function handleLogin() {
-    // Tady se pak bude řešit ověření v DB
     console.log("Přihlašování:", { username, password });
   }
 </script>
+
+<div class="header-area">
+  <a href="/" class="logo-link">
+    <div class="logo">
+      <img src="Think-different-Academy_LOGO_erb.png" alt="Logo" class="logomain" />
+    </div>
+  </a>
+  <a href="/" class="back-link">← Zpět</a>
+</div>
 
 <div class="login-wrapper">
   <div class="login-card">
@@ -48,13 +56,57 @@
 </div>
 
 <style>
-  /* Vycentrování celé karty na střed obrazovky */
+  /* Umístění loga a odkazu zpět */
+  .header-area {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .logo {
+    font-size: 24px;
+    font-weight: bold;
+    color: #4fc3f7;
+    cursor: pointer;
+    transition: transform 0.3s;
+  }
+
+  .logo:hover {
+    transform: scale(1.1) rotate(-2deg);
+  }
+
+  .logomain {
+    height: 50px; /* Uprav si podle potřeby */
+    display: block;
+  }
+
+  .logo-link {
+    text-decoration: none;
+  }
+
+  .back-link {
+    text-decoration: none;
+    color: #666;
+    font-size: 0.9rem;
+    font-family: sans-serif;
+    transition: color 0.2s;
+  }
+
+  .back-link:hover {
+    color: #007bff;
+  }
+
+  /* Zbytek stylů zůstává stejný */
   .login-wrapper {
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 80vh; /* Aby to nebylo úplně nalepené nahoře */
+    min-height: 100vh; 
     font-family: sans-serif;
+    background-color: #f5f7f9; /* Jemné pozadí, aby karta vynikla */
   }
 
   .login-card {
@@ -65,6 +117,7 @@
     width: 100%;
     max-width: 400px;
     text-align: center;
+    position: relative;
   }
 
   h2 {
@@ -96,13 +149,13 @@
     padding: 0.75rem;
     border: 1px solid #ddd;
     border-radius: 6px;
-    box-sizing: border-box; /* Důležité, aby input nepřetékal */
+    box-sizing: border-box;
     font-size: 1rem;
   }
 
   input:focus {
     outline: none;
-    border-color: #007bff; /* Modrá barva při kliknutí */
+    border-color: #007bff;
     box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.2);
   }
 
