@@ -1,18 +1,14 @@
 <script lang="ts">
-    // Tady load funkci nepíšeme, jen přijímáme data
     export let data;
+    // 'data.course' pochází z návratové hodnoty funkce load v +page.ts
 </script>
 
-<h1>Kurzy</h1>
-<div id="courses-list">
-    {#if data.courses && data.courses.length > 0}
-        {#each data.courses as course}
-            <div class="course-card">
-                <h2>{course.name}</h2>
-                <p>{course.description}</p>
-            </div>
-        {/each}
-    {:else}
-        <p>Zatím nejsou vypsány žádné kurzy.</p>
-    {/if}
-</div>
+<h1>Detail kurzu</h1>
+{#if data.course}
+    <section>
+        <h2>{data.course.name || data.course.title}</h2>
+        <p>{data.course.description}</p>
+    </section>
+{:else}
+    <p>Načítání...</p>
+{/if}
