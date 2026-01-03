@@ -1,15 +1,14 @@
 import type { PageLoad } from './$types';
+import { error } from '@sveltejs/kit';
 
 export const load: PageLoad = async ({ params, fetch }) => {
-  const { courseId } = params;
-  
-  // Zavolá vaše API pro získání detailu
-  const res = await fetch(`/api/courses/${courseId}`); 
-  
-  if (!res.ok) {
-    return { status: 404, error: 'Kurz nenalezen' };
-  }
+    // API volání musí odpovídat vaší backendové routě, která v testu prošla
+    const res = await fetch(`/api/courses/${params.courseId}`);
+    
+    if (!res.ok) {
+        throw error(res.status, 'Course not found');
+    }
 
-  const course = await res.json();
-  return { course };
+    const course = await res.json();
+    return { course };
 };
