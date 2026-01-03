@@ -1,14 +1,15 @@
 import type { PageLoad } from './$types';
 
-export const load: PageLoad = async ({ fetch }) => {
-    try {
-        const response = await fetch('/api/courses');
-        if (!response.ok) return { courses: [] };
-        
-        const courses = await response.json();
-        return { courses };
-    } catch (err) {
-        console.error("Chyba při načítání kurzů:", err);
-        return { courses: [] };
-    }
+export const load: PageLoad = async ({ params, fetch }) => {
+  const { courseId } = params;
+  
+  // Zavolá vaše API pro získání detailu
+  const res = await fetch(`/api/courses/${courseId}`); 
+  
+  if (!res.ok) {
+    return { status: 404, error: 'Kurz nenalezen' };
+  }
+
+  const course = await res.json();
+  return { course };
 };
