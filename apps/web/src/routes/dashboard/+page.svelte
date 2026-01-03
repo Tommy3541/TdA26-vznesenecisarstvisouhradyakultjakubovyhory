@@ -1,10 +1,4 @@
-<!DOCTYPE html>
-<html lang="cs">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <style>
+<style>
         * {
         box-sizing: border-box;
         margin: 0;
@@ -225,9 +219,8 @@
         transform: translateY(0);
         }
         }
-    </style>
-</head>
-<body>
+</style>
+
     <div class="wrapper2">
         <div class="wrapper1">
             <div class="menu">
@@ -259,5 +252,5 @@
             </div>
         </div>
     </div>
-</body>
-</html>
+
+
