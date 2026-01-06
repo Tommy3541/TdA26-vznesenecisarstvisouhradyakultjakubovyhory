@@ -16,7 +16,7 @@
 
             <div class="nav">
             <div class="nav-item">
-            <span>Kapitola 1</span>
+            <span><a href = "/courses">Kurzy</a></span>
             <div class="dropdown">
             <a href="#">Podkapitola 1</a>
             <a href="#">Podkapitola 2</a>
