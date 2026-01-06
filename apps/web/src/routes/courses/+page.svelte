@@ -69,7 +69,7 @@
                     <p>{course.description || 'Bez popisu'}</p>
                     <span class="detail-btn">Zobrazit detail</span>
                 </a>
-            {each}
+            {/each}
         {:else}
             <p>Aktuálně nejsou k dispozici žádné kurzy.</p>
         {/if}
