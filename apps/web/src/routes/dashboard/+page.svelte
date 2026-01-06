@@ -177,7 +177,7 @@
 
     /* Karty formulářů */
     .form-card {
-        background-color: #a8a8ff; /* Barva podle tvého schématu */
+        background-color: #d0d0d0; /* Barva podle tvého schématu */
         padding: 25px;
         border-radius: 10px;
         box-shadow: 0 2px 10px rgba(0,0,0,0.1);
@@ -212,7 +212,7 @@
 
     /* Seznam materiálů */
     .list-container {
-        background-color: #ffcc5c; /* Žlutá barva ze schématu */
+        background-color: #d0d0d0; /* Žlutá barva ze schématu */
         padding: 20px;
         border-radius: 10px;
     }
