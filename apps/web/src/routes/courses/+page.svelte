@@ -1,176 +1,130 @@
 <script lang="ts">
-    // Tady load funkci nepíšeme, jen přijímáme data
     export let data;
 </script>
 
 <div class="wrapper2">
-        <div class="wrapper1">
-            <div class="menu">
+    <div class="wrapper1">
+        <div class="menu">
             <div class="menu-left">
-            <a class="logo" href = "/"><img src="Think-different-Academy_LOGO_erb.png" class="logomain"></a>
+                <a class="logo" href="/"><img src="Think-different-Academy_LOGO_erb.png" alt="Logo" class="logomain"></a>
 
-            <div class="nav">
-            <div class="nav-item">
-            <span>Kapitola 1</span>
-            <div class="dropdown">
-            <a href="#">Podkapitola 1</a>
-            <a href="#">Podkapitola 2</a>
-            <a href="#">Podkapitola 3</a>
-            </div>
-            </div>
+                <div class="nav">
+                    <div class="nav-item">
+                        <span>Kapitola 1</span>
+                        <div class="dropdown">
+                            <a href="#">Podkapitola 1</a>
+                            <a href="#">Podkapitola 2</a>
+                            <a href="#">Podkapitola 3</a>
+                        </div>
+                    </div>
 
-            <div class="nav-item">
-            <span>Kapitola 2</span>
-            <div class="dropdown">
-            <a href="#">Podkapitola 1</a>
-            <a href="#">Podkapitola 2</a>
-            <a href="#">Podkapitola 3</a>
-            </div>
-            </div>
+                    <div class="nav-item">
+                        <span>Kapitola 2</span>
+                        <div class="dropdown">
+                            <a href="#">Podkapitola 1</a>
+                            <a href="#">Podkapitola 2</a>
+                            <a href="#">Podkapitola 3</a>
+                        </div>
+                    </div>
 
-            <div class="nav-item">
-            <span>Kapitola 3</span>
-            <div class="dropdown">
-            <a href="#">Podkapitola 1</a>
-            <a href="#">Podkapitola 2</a>
-            <a href="#">Podkapitola 3</a>
+                    <div class="nav-item">
+                        <span>Kapitola 3</span>
+                        <div class="dropdown">
+                            <a href="#">Podkapitola 1</a>
+                            <a href="#">Podkapitola 2</a>
+                            <a href="#">Podkapitola 3</a>
+                        </div>
+                    </div>
+                </div>
             </div>
-            </div>
+        </div>
 
-            <div class="nav-item">
-            <span>Kapitola 4</span>
-            <div class="dropdown">
-            <a href="#">Podkapitola 1</a>
-            <a href="#">Podkapitola 2</a>
-            <a href="#">Podkapitola 3</a>
+        <div class="section section-text">
+            <div class="courses-container">
+                {#if data.courses && data.courses.length > 0}
+                    {#each data.courses as course}
+                        <a href="/courses/{course.uuid}" class="course-card">
+                            <h3>{course.name}</h3>
+                            <p>{course.description || 'Bez popisu'}</p>
+                            <span class="detail-btn">Zobrazit detail</span>
+                        </a>
+                    {/each}
+                {:else}
+                    <div class="no-courses">
+                        <p>Aktuálně nejsou k dispozici žádné kurzy.</p>
+                        </div>
+                {/if}
             </div>
-            </div>
+        </div>
 
-            <div class="nav-item">
-            <span>Kapitola 5</span>
-            <div class="dropdown">
-            <a href="#">Podkapitola 1</a>
-            <a href="#">Podkapitola 2</a>
-            <a href="#">Podkapitola 3</a>
-            </div>
-            </div>
-            </div>
-            </div>
-            </div>
-
-            <div class="section section-text">
-            <div class="kurzy">
-            <div class="section section-text">
-    <div class="courses-container">
-        {#if data.courses && data.courses.length > 0}
-            {#each data.courses as course}
-                <a href="/courses/{course.uuid}" class="course-card">
-                    <h3>{course.name}</h3>
-                    <p>{course.description || 'Bez popisu'}</p>
-                    <span class="detail-btn">Zobrazit detail</span>
-                </a>
-            {/each}
-        {:else}
-            <p>Aktuálně nejsou k dispozici žádné kurzy.</p>
-        {/if}
-    </div>
-</div>
-            
-            </div>
-            </div>
-
-            <div class="footer">
+        <div class="footer">
             <p>Kontakt: info@example.com</p>
             <p>Adresa: Ulice 123, 100 00 Praha</p>
             <p>&copy; 2025 Moje Webová Stránka</p>
-            </div>
         </div>
     </div>
+</div>
 
- <style>
-        * {
+<style>
+    * {
         box-sizing: border-box;
         margin: 0;
         padding: 0;
-        font-family: Arial, sans-serif;
-        }
+        font-family: 'Dosis', Arial, sans-serif;
+    }
 
-
-        body {
+    body {
         background: #f4f4f4;
         color: #333;
-        }
+    }
 
-        .menu {
+    .menu {
         height: 70px;
         position: sticky;
         top: 0;
         z-index: 1000;
         background: #111;
         color: #fff;
-        padding: 0px 30px;
+        padding: 0 30px;
         display: flex;
         align-items: center;
         justify-content: space-between;
         animation: slideDown 1s ease;
-        }
+    }
 
-
-        .menu-left {
+    .menu-left {
         display: flex;
         align-items: center;
         gap: 40px;
         flex: 1;
-        }
+    }
 
+    .logomain {
+        height: 50px;
+    }
 
-        .logo {
-        font-size: 24px;
-        font-weight: bold;
-        color: #4fc3f7;
-        cursor: pointer;
-        transition: transform 0.3s;
-        }
-
-
-        .logo:hover {
-        transform: scale(1.1) rotate(-2deg);
-        }
-
-
-        .nav {
+    .nav {
         display: flex;
         height: 100%;
         gap: 5px;
         margin-left: auto;
-        }
+    }
 
-
-        .nav-item {
+    .nav-item {
         height: 100%;
         display: flex;
         align-items: center;
         position: relative;
         padding: 0 22px;
         cursor: pointer;
-        }
+    }
 
-
-        .nav-item > span {
+    .nav-item > span {
         display: block;
         padding: 10px 5px;
-        cursor: pointer;
-        pointer-events: none;
-        }
+    }
 
-
-        .nav-item:hover > span {
-        background: rgba(79,195,247,0.1);
-        border-radius: 6px;
-        }
-
-
-        .dropdown {
+    .dropdown {
         position: absolute;
         top: 100%;
         left: 0;
@@ -181,140 +135,89 @@
         transform: translateY(-10px);
         pointer-events: none;
         transition: all 0.3s ease;
-        }
+    }
 
-
-        .dropdown a {
+    .dropdown a {
         display: block;
         padding: 10px 20px;
         color: #fff;
         text-decoration: none;
         white-space: nowrap;
-        transition: background 0.3s;
-        }
+    }
 
-
-        .dropdown a:hover {
+    .dropdown a:hover {
         background: #4fc3f7;
         color: #000;
-        }
+    }
 
-
-        .nav-item:hover .dropdown,
-        .nav-item .dropdown:hover {
+    .nav-item:hover .dropdown {
         opacity: 1;
         transform: translateY(0);
         pointer-events: auto;
-        }
+    }
 
-
-
-        .login {
-        cursor: pointer;
-        padding: 8px 16px;
-        border: 1px solid #4fc3f7;
-        border-radius: 20px;
-        transition: all 0.3s ease;
-        }
-
-
-        .login:hover {
-        background: #4fc3f7;
-        color: #000;
-        transform: scale(1.05);
-        }
-
-
-        .section {
-        padding: 80px 15%;
-        animation: fadeUp 1.2s ease;
-        }
-
-
-        .section-text {
-        display: flex;
-        align-items: center;
-        justify-content: center;
+    .section-text {
+        padding: 60px 10%;
         background: #eaeaea;
-        font-size: 18px;
-        line-height: 1.7;
-        }
+        min-height: 60vh;
+        display: flex;
+        justify-content: center;
+    }
 
+    .courses-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 25px;
+        width: 100%;
+        max-width: 1200px;
+    }
 
-        .footer {
+    .course-card {
+        background: #1A1A1A;
+        color: white;
+        padding: 25px;
+        border-radius: 15px;
+        text-decoration: none;
+        border-left: 8px solid #0070BB;
+        transition: transform 0.3s ease, border-color 0.3s ease;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    .course-card:hover {
+        transform: translateY(-5px);
+        border-left-color: #91F5AD;
+    }
+
+    .course-card h3 {
+        margin-bottom: 10px;
+        color: #91F5AD;
+    }
+
+    .detail-btn {
+        margin-top: 15px;
+        font-size: 0.9rem;
+        color: #4fc3f7;
+        font-weight: bold;
+    }
+
+    .footer {
         background: #111;
         color: #bbb;
         text-align: center;
         padding: 50px 20px;
-        }
+    }
 
+    @keyframes slideDown {
+        from { opacity: 0; transform: translateY(-30px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
 
-        .footer p {
-        margin: 10px 0;
-        }
-
-        .logomain{
-            height: 50px;
-        }
-
-        .kurzy{
-            height: 250px;
-            width: 600px;
-            border: 2px solid rgb(74, 74, 74);
-        }
-
-        /* ===== ANIMACE ===== */
-        @keyframes slideDown {
-        from {
-        opacity: 0;
-        transform: translateY(-30px);
-        }
-        to {
-        opacity: 1;
-        transform: translateY(0);
-        }
-        }
-
-
-        @keyframes fadeUp {
-        from {
-        opacity: 0;
-        transform: translateY(40px);
-        }
-        to {
-        opacity: 1;
-        transform: translateY(0);
-        }
-        }
-        /* Přidej do <style> a použij barvy z manuálu */
-:global(body) {
-    font-family: 'Dosis', sans-serif; /* Použití fontu Dosis  */
-}
-
-.courses-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 25px;
-    width: 100%;
-}
-
-.course-card {
-    background: #1A1A1A; /* Tmavá barva z manuálu  */
-    color: white;
-    padding: 25px;
-    border-radius: 15px;
-    text-decoration: none;
-    border-left: 8px solid #0070BB; /* Modrá z manuálu pro vzdělávání  */
-    transition: transform 0.3s ease, border-color 0.3s ease;
-}
-
-.course-card:hover {
-    transform: translateY(-5px);
-    border-left-color: #91F5AD; /* Zelená z manuálu pro rozvoj  */
-}
-
-.course-card h3 {
-    margin-bottom: 10px;
-    color: #91F5AD; /* Zelená pro nadpisy  */
-}
+    .no-courses {
+        text-align: center;
+        grid-column: 1 / -1;
+        padding: 40px;
+        color: #666;
+    }
 </style>
