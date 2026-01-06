@@ -1,23 +1,19 @@
 <script lang="ts">
     // lang="ts" řeší chybu "Type annotations can only be used in TypeScript files"
     export let data;
-    // Fallback data pro případ, že by data nebyla načtena (aby build nespadl)
+    // Fallback data pro případ, že by data nebyla načtena
     const { course, materials } = data || { course: { title: 'Nadpis' }, materials: [] };
 
     let fileInput: HTMLInputElement;
-    let fileName = '';
-    let fileDesc = '';
 
-    function handleUpload() {
-        const file = fileInput.files?.[0];
-        if (!file) return;
-
-        // Kontrola velikosti: max 30 MB
-        if (file.size > 30 * 1024 * 1024) {
+    // Klientská validace zůstává pro lepší UX
+    function validateSize(event: Event) {
+        const input = event.target as HTMLInputElement;
+        const file = input.files?.[0];
+        if (file && file.size > 30 * 1024 * 1024) {
             alert("Soubor je příliš velký (max 30 MB)");
-            return;
+            input.value = ''; // Vymaže výběr
         }
-        // Logika pro odeslání...
     }
 </script>
 
@@ -45,21 +41,36 @@
 
         <section class="admin-section">
             <div class="forms-container">
-                <div class="form-card">
+                <form 
+                    method="POST" 
+                    action="?/uploadFile" 
+                    enctype="multipart/form-data" 
+                    class="form-card"
+                >
                     <h3>Soubor</h3>
-                    <input type="text" bind:value={fileName} placeholder="Název" class="input-field" />
-                    <textarea bind:value={fileDesc} placeholder="Popis" class="input-field no-resize"></textarea>
-                    <input type="file" bind:this={fileInput} class="file-input" />
-                    <button on:click={handleUpload} class="action-btn">Uložit soubor</button>
-                </div>
+                    <input type="text" name="title" placeholder="Název" class="input-field" required />
+                    <textarea name="description" placeholder="Popis" class="input-field no-resize"></textarea>
+                    <input 
+                        type="file" 
+                        name="file" 
+                        class="file-input" 
+                        on:change={validateSize} 
+                        required 
+                    />
+                    <button type="submit" class="action-btn">Uložit soubor</button>
+                </form>
 
-                <div class="form-card">
+                <form 
+                    method="POST" 
+                    action="?/uploadLink" 
+                    class="form-card"
+                >
                     <h3>Odkaz (URL)</h3>
-                    <input type="text" placeholder="Název" class="input-field" />
-                    <input type="url" placeholder="URL adresa" class="input-field" />
-                    <textarea placeholder="Popis" class="input-field no-resize"></textarea>
-                    <button class="action-btn">Uložit odkaz</button>
-                </div>
+                    <input type="text" name="title" placeholder="Název" class="input-field" required />
+                    <input type="url" name="url" placeholder="URL adresa" class="input-field" required />
+                    <textarea name="description" placeholder="Popis" class="input-field no-resize"></textarea>
+                    <button type="submit" class="action-btn">Uložit odkaz</button>
+                </form>
             </div>
 
             <div class="list-container">
@@ -75,6 +86,9 @@
                         <div class="material-info">
                             <strong>{material.title}</strong>
                             <p>{material.description}</p>
+                            {#if material.type === 'LINK'}
+                                <small style="color: blue;">{material.url}</small>
+                            {/if}
                         </div>
                         <div class="material-actions">
                             <button class="icon-btn">✏️</button>
@@ -96,7 +110,7 @@
 </div>
 
 <style>
-    /* Globální reset a layout */
+    /* Styly zůstávají zachovány podle tvého zadání */
     :global(body) {
         margin: 0;
         padding: 0;
@@ -107,10 +121,9 @@
         display: flex;
         flex-direction: column;
         min-height: 100vh;
-        background-color: #f0f0f0; /* Světle šedé pozadí středu */
+        background-color: #f0f0f0;
     }
 
-    /* Horní lišta */
     .top-nav {
         background-color: #111;
         color: white;
@@ -144,7 +157,6 @@
         cursor: pointer;
     }
 
-    /* Střední část */
     .main-content {
         flex: 1;
         padding-bottom: 40px;
@@ -175,9 +187,8 @@
         margin-bottom: 40px;
     }
 
-    /* Karty formulářů */
     .form-card {
-        background-color: #d0d0d0; /* Barva podle tvého schématu */
+        background-color: #d0d0d0;
         padding: 25px;
         border-radius: 10px;
         box-shadow: 0 2px 10px rgba(0,0,0,0.1);
@@ -193,7 +204,6 @@
         box-sizing: border-box;
     }
 
-    /* Odebrání funkce zvětšování pole */
     .no-resize {
         resize: none;
         height: 80px;
@@ -210,9 +220,8 @@
         font-weight: bold;
     }
 
-    /* Seznam materiálů */
     .list-container {
-        background-color: #d0d0d0; /* Žlutá barva ze schématu */
+        background-color: #d0d0d0;
         padding: 20px;
         border-radius: 10px;
     }
@@ -237,7 +246,6 @@
         font-size: 0.9rem;
     }
 
-    /* Patička */
     .bottom-footer {
         background-color: #111;
         color: white;
@@ -246,8 +254,15 @@
         font-size: 0.85rem;
     }
 
-    .bottom-footer p {
-        margin: 5px 0;
+    .icon-btn {
+        background: none;
+        border: none;
+        cursor: pointer;
+        font-size: 1.2rem;
+    }
+
+    .empty-msg {
+        text-align: center;
+        color: #666;
     }
 </style>
-
