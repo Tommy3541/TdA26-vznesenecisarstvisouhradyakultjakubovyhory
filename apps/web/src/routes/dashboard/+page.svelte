@@ -1,256 +1,125 @@
-<style>
-        * {
-        box-sizing: border-box;
-        margin: 0;
-        padding: 0;
-        font-family: Arial, sans-serif;
+<script lang="ts">
+    // Přidáním lang="ts" zmizí ta červená chyba z tvého obrázku!
+    export let data;
+    const { course, materials } = data;
+
+    let fileInput: HTMLInputElement;
+    let fileName = '';
+    let fileDesc = '';
+
+    function handleUpload() {
+        const file = fileInput.files?.[0];
+        if (!file) return;
+
+        // Kontrola velikosti: max 30 MB
+        if (file.size > 30 * 1024 * 1024) {
+            alert("Soubor je příliš velký (max 30 MB)");
+            return;
         }
+        
+        // Logika pro odeslání na API...
+    }
+</script>
 
+<div class="main-container">
+    <div class="header-section">
+        <h1>{course.title}</h1>
+    </div>
 
-        body {
-        background: #f4f4f4;
-        color: #333;
-        }
+    <div class="admin-grid">
+        <div class="purple-box">
+            <h3>Soubor</h3>
+            <input type="text" bind:value={fileName} placeholder="Název" />
+            <textarea bind:value={fileDesc} placeholder="Popis"></textarea>
+            <input type="file" bind:this={fileInput} />
+            <button on:click={handleUpload} class="save-btn">Uložit soubor</button>
+        </div>
 
-        .menu {
-        height: 70px;
-        position: sticky;
-        top: 0;
-        z-index: 1000;
-        background: #111;
-        color: #fff;
-        padding: 0px 30px;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        animation: slideDown 1s ease;
-        }
-
-
-        .menu-left {
-        display: flex;
-        align-items: center;
-        gap: 40px;
-        flex: 1;
-        }
-
-
-        .logo {
-        font-size: 24px;
-        font-weight: bold;
-        color: #4fc3f7;
-        cursor: pointer;
-        transition: transform 0.3s;
-        }
-
-
-        .logo:hover {
-        transform: scale(1.1) rotate(-2deg);
-        }
-
-
-        .nav {
-        display: flex;
-        height: 100%;
-        gap: 5px;
-        margin-left: auto;
-        }
-
-
-        .nav-item {
-        height: 100%;
-        display: flex;
-        align-items: center;
-        position: relative;
-        padding: 0 22px;
-        cursor: pointer;
-        }
-
-
-        .nav-item > span {
-        display: block;
-        padding: 10px 5px;
-        cursor: pointer;
-        pointer-events: none;
-        }
-
-
-        .nav-item:hover > span {
-        background: rgba(79,195,247,0.1);
-        border-radius: 6px;
-        }
-
-
-        .dropdown {
-        position: absolute;
-        top: 100%;
-        left: 0;
-        background: #222;
-        border-radius: 6px;
-        overflow: hidden;
-        opacity: 0;
-        transform: translateY(-10px);
-        pointer-events: none;
-        transition: all 0.3s ease;
-        }
-
-
-        .dropdown a {
-        display: block;
-        padding: 10px 20px;
-        color: #fff;
-        text-decoration: none;
-        white-space: nowrap;
-        transition: background 0.3s;
-        }
-
-
-        .dropdown a:hover {
-        background: #4fc3f7;
-        color: #000;
-        }
-
-
-        .nav-item:hover .dropdown,
-        .nav-item .dropdown:hover {
-        opacity: 1;
-        transform: translateY(0);
-        pointer-events: auto;
-        }
-
-
-
-        .login {
-        cursor: pointer;
-        padding: 8px 16px;
-        border: 1px solid #06141b;
-        border-radius: 10px;
-        transition: all 0.3s ease;
-        }
-
-
-        .login:hover {
-        background: #06141b;
-        color: white;
-        transform: scale(1.05);
-        }
-
-
-        .section {
-        padding: 80px 15%;
-        animation: fadeUp 1.2s ease;
-        }
-
-
-        .section-quote {
-        background: #fff;
-        text-align: center;
-        font-size: 28px;
-        font-weight: bold;
-        }
-
-
-        .section-text {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background: #eaeaea;
-        font-size: 18px;
-        line-height: 1.7;
-        }
-
-
-        .footer {
-        background: #111;
-        color: #bbb;
-        text-align: center;
-        padding: 50px 20px;
-        }
-
-        .editkurzy{
-            height: 250px;
-            width: 600px;
-            border: 2px solid rgb(74, 74, 74);
-        }
-        .add{
-            height: 250px;
-            width: 30px;
-            border: 2px solid #319ccd;
-            background-color: #4fc3f7;
-            margin-left: 5px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: white;
-            font-size: 24px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-
-
-        .footer p {
-        margin: 10px 0;
-        }
-
-        .logomain{
-            height: 50px;
-        }
-
-        /* ===== ANIMACE ===== */
-        @keyframes slideDown {
-        from {
-        opacity: 0;
-        transform: translateY(-30px);
-        }
-        to {
-        opacity: 1;
-        transform: translateY(0);
-        }
-        }
-
-
-        @keyframes fadeUp {
-        from {
-        opacity: 0;
-        transform: translateY(40px);
-        }
-        to {
-        opacity: 1;
-        transform: translateY(0);
-        }
-        }
-</style>
-
-    <div class="wrapper2">
-        <div class="wrapper1">
-            <div class="menu">
-            <div class="menu-left">
-            <div class="logo"><img src="Think-different-Academy_LOGO_erb.png" class="logomain"></div>
-
-            <div class="nav">
-
-            </div>
-            </div>
-
-
-            <div class="login">Profil</div>
-            </div>
-
-            <div class="section section-quote">
-            <h1>Nadpis</h1>
-            </div>
-
-            <div class="section section-text">
-            <div class="editkurzy">edit: kurzy</div>
-            <div class="add">+</div>
-            </div>
-
-            <div class="footer">
-            <p>Kontakt: info@example.com</p>
-            <p>Adresa: Ulice 123, 100 00 Praha</p>
-            <p>&copy; 2025 Moje Webová Stránka</p>
-            </div>
+        <div class="purple-box">
+            <h3>Odkaz (URL)</h3>
+            <input type="text" placeholder="Název" />
+            <input type="url" placeholder="URL adresa" />
+            <textarea placeholder="Popis"></textarea>
+            <button class="save-btn">Uložit odkaz</button>
         </div>
     </div>
 
+    <div class="yellow-list">
+        {#each materials as material}
+            <div class="material-item">
+                <div class="icon">
+                    {#if material.type === 'LINK'}
+                        <img src="https://www.google.com/s2/favicons?domain={material.url}&sz=32" alt="icon" />
+                    {:else}
+                        <span>📄</span>
+                    {/if}
+                </div>
+                <div class="text">
+                    <strong>{material.title}</strong>
+                    <p>{material.description}</p>
+                </div>
+                <div class="controls">
+                    <button>✏️</button>
+                    <button>🗑️</button>
+                </div>
+            </div>
+        {/each}
+    </div>
+</div>
+
+<style>
+    .main-container {
+        background-color: #5d7cf9; /* Modré pozadí z tvého návrhu */
+        min-height: 100vh;
+        padding: 20px;
+    }
+    .header-section {
+        background: white;
+        padding: 40px;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+    .admin-grid {
+        display: flex;
+        gap: 20px;
+        margin-bottom: 20px;
+    }
+    .purple-box {
+        background-color: #9b8bf4; /* Fialové boxy */
+        padding: 20px;
+        flex: 1;
+        border-radius: 8px;
+    }
+    .purple-box input, .purple-box textarea {
+        display: block;
+        width: 100%;
+        margin-bottom: 10px;
+        background: black;
+        color: white;
+        border: none;
+        padding: 10px;
+    }
+    .yellow-list {
+        background-color: #ffca28; /* Žlutý seznam */
+        padding: 20px;
+        border-radius: 8px;
+    }
+    .material-item {
+        background: white;
+        display: flex;
+        align-items: center;
+        padding: 15px;
+        margin-bottom: 10px;
+        border-radius: 5px;
+        gap: 15px;
+    }
+    .save-btn {
+        background-color: #4caf50;
+        color: white;
+        border: none;
+        padding: 10px;
+        width: 100%;
+        cursor: pointer;
+    }
+</style>
 
