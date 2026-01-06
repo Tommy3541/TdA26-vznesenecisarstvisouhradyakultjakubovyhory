@@ -7,7 +7,7 @@
         <div class="wrapper1">
             <div class="menu">
             <div class="menu-left">
-            <div class="logo"><img src="Think-different-Academy_LOGO_erb.png" class="logomain"></div>
+            <a class="logo" href = "/"><img src="Think-different-Academy_LOGO_erb.png" class="logomain"></a>
 
             <div class="nav">
             <div class="nav-item">
