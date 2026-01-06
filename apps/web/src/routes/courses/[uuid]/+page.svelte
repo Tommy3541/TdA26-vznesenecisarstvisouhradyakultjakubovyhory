@@ -95,5 +95,27 @@
         font-weight: bold;
     }
 
-    .download-link {
-        background-color: #4fc3f7
+ .download-link {
+        background-color: #4fc3f7;
+        color: white;
+        text-decoration: none;
+        padding: 0.5rem 1rem;
+        border-radius: 4px;
+        font-size: 0.9rem;
+    }
+
+    .download-link:hover {
+        background-color: #2196f3;
+    }
+
+    .back-link {
+        display: inline-block;
+        margin-top: 2rem;
+        color: #666;
+        text-decoration: none;
+    }
+
+    .back-link:hover {
+        text-decoration: underline;
+    }
+</style>
