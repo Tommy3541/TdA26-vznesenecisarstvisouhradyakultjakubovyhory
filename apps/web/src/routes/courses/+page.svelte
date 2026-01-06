@@ -59,7 +59,24 @@
             </div>
 
             <div class="section section-text">
-            <div class="kurzy">KURZY</div>
+            <div class="kurzy">
+            <div class="section section-text">
+    <div class="courses-container">
+        {#if data.courses && data.courses.length > 0}
+            {#each data.courses as course}
+                <a href="/courses/{course.uuid}" class="course-card">
+                    <h3>{course.name}</h3>
+                    <p>{course.description || 'Bez popisu'}</p>
+                    <span class="detail-btn">Zobrazit detail</span>
+                </a>
+            {each}
+        {:else}
+            <p>Aktuálně nejsou k dispozici žádné kurzy.</p>
+        {/if}
+    </div>
+</div>
+            
+            </div>
             </div>
 
             <div class="footer">
@@ -269,4 +286,35 @@
         transform: translateY(0);
         }
         }
+        /* Přidej do <style> a použij barvy z manuálu */
+:global(body) {
+    font-family: 'Dosis', sans-serif; /* Použití fontu Dosis  */
+}
+
+.courses-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 25px;
+    width: 100%;
+}
+
+.course-card {
+    background: #1A1A1A; /* Tmavá barva z manuálu  */
+    color: white;
+    padding: 25px;
+    border-radius: 15px;
+    text-decoration: none;
+    border-left: 8px solid #0070BB; /* Modrá z manuálu pro vzdělávání  */
+    transition: transform 0.3s ease, border-color 0.3s ease;
+}
+
+.course-card:hover {
+    transform: translateY(-5px);
+    border-left-color: #91F5AD; /* Zelená z manuálu pro rozvoj  */
+}
+
+.course-card h3 {
+    margin-bottom: 10px;
+    color: #91F5AD; /* Zelená pro nadpisy  */
+}
 </style>
