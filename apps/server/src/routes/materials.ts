@@ -5,9 +5,9 @@ import multer from "multer";
 import path from "path";
 import fs from "fs";
 
-export const materialRoutes = Router();
+export const materialRoutes = Router({ mergeParams: true });
 
-// Konfigurace nahrávání 
+// --- KONFIGURACE MULTERU (Povinné pro Fázi 2) ---
 const ALLOWED_MIMES = [
     'application/pdf', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'text/plain',
     'image/png', 'image/jpeg', 'image/gif',
@@ -34,8 +34,10 @@ const upload = multer({
     }
 });
 
-// 1. Získání materiálů pro konkrétní kurz (od nejnovějšího)
-materialRoutes.get("/course/:courseUuid", async (req, res) => {
+// --- ENDPOINTY ---
+
+// 1. GET /courses/:courseUuid/materials
+materialRoutes.get("/", async (req: any, res: any) => {
     try {
         const [rows] = await pool.execute(
             "SELECT * FROM materials WHERE course_uuid = ? ORDER BY created_at DESC",
@@ -47,58 +49,70 @@ materialRoutes.get("/course/:courseUuid", async (req, res) => {
     }
 });
 
-// 2. Přidání souboru
-materialRoutes.post("/course/:courseUuid/file", (req, res) => {
-    upload.single('file')(req, res, async (err) => {
+// 2. POST /courses/:courseUuid/materials
+materialRoutes.post("/", (req: any, res: any) => {
+    upload.single('file')(req, res, async (err: any) => {
         if (err) return res.status(400).json({ error: err.message });
-        if (!req.file) return res.status(400).json({ error: "No file uploaded" });
 
-        const { name, description } = req.body;
+        const { name, description, url } = req.body;
+        const { courseUuid } = req.params;
         const uuid = uuidv4();
 
         try {
-            await pool.execute(
-                "INSERT INTO materials (uuid, course_uuid, name, description, type, content, mime_type) VALUES (?, ?, ?, ?, 'file', ?, ?)",
-                [uuid, req.params.courseUuid, name, description, req.file.filename, req.file.mimetype]
-            );
-            res.status(201).json({ uuid, name, type: 'file' });
+            if (req.file) {
+                await pool.execute(
+                    "INSERT INTO materials (uuid, course_uuid, name, description, type, content, mime_type) VALUES (?, ?, ?, ?, 'file', ?, ?)",
+                    [uuid, courseUuid, name, description, req.file.filename, req.file.mimetype]
+                );
+                return res.status(201).json({ uuid, name, type: 'file' });
+            } else if (url) {
+                await pool.execute(
+                    "INSERT INTO materials (uuid, course_uuid, name, description, type, content) VALUES (?, ?, ?, ?, 'url', ?)",
+                    [uuid, courseUuid, name, description, url]
+                );
+                return res.status(201).json({ uuid, name, type: 'url' });
+            }
+            res.status(400).json({ error: "No file or URL" });
         } catch (dbErr) {
             res.status(500).json({ error: "Database error" });
         }
     });
 });
 
-// 3. Přidání odkazu (URL)
-materialRoutes.post("/course/:courseUuid/url", async (req, res) => {
+// 3. PUT /courses/:courseUuid/materials/:materialUuid (Aktualizace)
+materialRoutes.put("/:materialUuid", async (req: any, res: any) => {
     const { name, description, url } = req.body;
-    const uuid = uuidv4();
-
     try {
-        await pool.execute(
-            "INSERT INTO materials (uuid, course_uuid, name, description, type, content) VALUES (?, ?, ?, ?, 'url', ?)",
-            [uuid, req.params.courseUuid, name, description, url]
-        );
-        res.status(201).json({ uuid, name, type: 'url' });
+        if (url) {
+            await pool.execute(
+                "UPDATE materials SET name = ?, description = ?, content = ? WHERE uuid = ?",
+                [name, description, url, req.params.materialUuid]
+            );
+        } else {
+            await pool.execute(
+                "UPDATE materials SET name = ?, description = ? WHERE uuid = ?",
+                [name, description, req.params.materialUuid]
+            );
+        }
+        res.json({ success: true });
     } catch (err) {
-        res.status(400).json({ error: "Invalid data" });
+        res.status(500).json({ error: "Update failed" });
     }
 });
 
-// 4. Smazání materiálu (včetně fyzického souboru)
-materialRoutes.delete("/:uuid", async (req, res) => {
+// 4. DELETE /courses/:courseUuid/materials/:materialUuid (Smazání)
+materialRoutes.delete("/:materialUuid", async (req: any, res: any) => {
     try {
-        const [rows]: any = await pool.execute("SELECT * FROM materials WHERE uuid = ?", [req.params.uuid]);
+        const [rows]: any = await pool.execute("SELECT * FROM materials WHERE uuid = ?", [req.params.materialUuid]);
         if (rows.length === 0) return res.status(404).json({ error: "Not found" });
 
         const material = rows[0];
-        
-        // Pokud je to soubor, smažeme ho z disku
         if (material.type === 'file') {
             const filePath = path.join('uploads', material.content);
             if (fs.existsSync(filePath)) fs.unlinkSync(filePath);
         }
 
-        await pool.execute("DELETE FROM materials WHERE uuid = ?", [req.params.uuid]);
+        await pool.execute("DELETE FROM materials WHERE uuid = ?", [req.params.materialUuid]);
         res.status(204).send();
     } catch (err) {
         res.status(500).json({ error: "Delete failed" });

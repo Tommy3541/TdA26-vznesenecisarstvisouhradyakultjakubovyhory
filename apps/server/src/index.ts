@@ -23,7 +23,7 @@ apiRoutes.use("/users", userRoutes);
 
 apiRoutes.use("/courses", courseRoutes);
 
-apiRoutes.use("/materials", materialRoutes);
+apiRoutes.use("/courses/:courseUuid/materials", materialRoutes);
 
 // ✅ Výstup podle zadání Tour de App
 apiRoutes.get("/", (_req, res) => {
