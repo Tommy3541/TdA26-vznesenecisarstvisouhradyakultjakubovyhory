@@ -4,6 +4,7 @@ import express from "express";
 import { initDatabase } from "./db/init.js";
 import { userRoutes } from "./routes/users.js";
 import { courseRoutes } from "./routes/courses.js"
+import { materialRoutes } from "./routes/materials.js";
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -21,6 +22,8 @@ const apiRoutes = express.Router();
 apiRoutes.use("/users", userRoutes);
 
 apiRoutes.use("/courses", courseRoutes);
+
+apiRoutes.use("/materials", materialRoutes);
 
 // ✅ Výstup podle zadání Tour de App
 apiRoutes.get("/", (_req, res) => {
