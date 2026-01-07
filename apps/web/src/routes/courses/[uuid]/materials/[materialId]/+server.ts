@@ -27,15 +27,16 @@ export async function PUT({ request, params }) {
     }
   });
 
-  return json({
-    uuid: updated.id,
-    type: updated.type === 'URL' ? 'url' : 'file',
-    name: updated.name,
-    description: updated.description,
-    ...(updated.type === 'URL'
-      ? { url: updated.url }
-      : { fileUrl: updated.fileUrl, mimeType: updated.mimeType })
-  });
+return json({
+  uuid: updated.id,
+  type: updated.type === 'URL' ? 'url' : 'file',
+  name: updated.name,
+  description: updated.description,
+  ...(updated.type === 'URL'
+    ? { url: updated.url }
+    : { fileUrl: updated.fileUrl, mimeType: updated.mimeType })
+});
+
 }
 
 export async function DELETE({ params }) {
