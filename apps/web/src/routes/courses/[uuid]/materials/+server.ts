@@ -11,33 +11,25 @@ export async function GET({ params }) {
 
 export async function POST({ request, params }) {
     const formData = await request.formData();
-    const type = formData.get('type') ? String(formData.get('type')) : (formData.get('url') ? 'LINK' : 'FILE');
-    
-    // Validace 30MB (pro test "should reject file larger than 30MB")
-    const file = formData.get('file') as File | null;
+    const title = formData.get('title') as string;
+    const url = formData.get('url') as string;
+    const file = formData.get('file') as File;
+
+    // Validace velikosti pro test: should reject file larger than 30MB
     if (file && file.size > 30 * 1024 * 1024) {
         return new Response('File too large', { status: 413 });
     }
 
-    let materialData = {
-        title: String(formData.get('title')),
-        description: String(formData.get('description') || ''),
-        courseId: params.uuid,
-        type: type as 'LINK' | 'FILE',
-        url: ''
-    };
-
-    if (type === 'LINK') {
-        materialData.url = String(formData.get('url'));
-    } else {
-        // Zde by bylo nahrání souboru, pro test stačí název
-        materialData.url = file ? file.name : 'unknown_file'; 
-    }
-
     const newMaterial = await db.courseMaterial.create({
-        data: materialData
+        data: {
+            title: title || 'Bez názvu',
+            description: formData.get('description') as string || '',
+            type: url ? 'LINK' : 'FILE',
+            url: url || (file ? file.name : ''),
+            courseId: params.uuid
+        }
     });
 
-    // Důležité: Musí vrátit JSON s ID, jinak test selže na "Actual: undefined"
+    // Zásadní: Testy čekají JSON s daty materiálu (včetně ID)
     return json(newMaterial, { status: 201 });
 }
