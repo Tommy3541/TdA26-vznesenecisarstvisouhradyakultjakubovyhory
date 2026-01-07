@@ -8,7 +8,7 @@
 		users = await response.json();
 	});
 </script>
-    <div class="wrapper2">
+	<div class="wrapper2">
         <div class="wrapper1">
             <div class="menu">
             <div class="menu-left">
@@ -16,54 +16,17 @@
 
             <div class="nav">
             <div class="nav-item">
-            <span><a href = "/courses">Kurzy</a></span>
-            <div class="dropdown">
-            <a href="#">Podkapitola 1</a>
-            <a href="#">Podkapitola 2</a>
-            <a href="#">Podkapitola 3</a>
+            <span>Kapitola 1</span>
             </div>
             </div>
 
             <div class="nav-item">
             <span>Kapitola 2</span>
-            <div class="dropdown">
-            <a href="#">Podkapitola 1</a>
-            <a href="#">Podkapitola 2</a>
-            <a href="#">Podkapitola 3</a>
-            </div>
-            </div>
-
-            <div class="nav-item">
-            <span>Kapitola 3</span>
-            <div class="dropdown">
-            <a href="#">Podkapitola 1</a>
-            <a href="#">Podkapitola 2</a>
-            <a href="#">Podkapitola 3</a>
-            </div>
-            </div>
-
-            <div class="nav-item">
-            <span>Kapitola 4</span>
-            <div class="dropdown">
-            <a href="#">Podkapitola 1</a>
-            <a href="#">Podkapitola 2</a>
-            <a href="#">Podkapitola 3</a>
-            </div>
-            </div>
-
-            <div class="nav-item">
-            <span>Kapitola 5</span>
-            <div class="dropdown">
-            <a href="#">Podkapitola 1</a>
-            <a href="#">Podkapitola 2</a>
-            <a href="#">Podkapitola 3</a>
-            </div>
-            </div>
             </div>
             </div>
 
 
-            <a href="/login" class="login">Přihlásit se</a>
+            <div class="login">Přihlásit se</div>
             </div>
 
             <div class="section section-quote">
@@ -84,7 +47,7 @@
         </div>
     </div>
 <style>
- * {
+		* {
         box-sizing: border-box;
         margin: 0;
         padding: 0;
@@ -108,14 +71,13 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
-        animation: slideDown 1s ease;
         }
 
 
         .menu-left {
         display: flex;
         align-items: center;
-        gap: 40px;
+        gap: 10px;
         flex: 1;
         }
 
@@ -160,50 +122,11 @@
         }
 
 
+
         .nav-item:hover > span {
         background: rgba(79,195,247,0.1);
         border-radius: 6px;
         }
-
-
-        .dropdown {
-        position: absolute;
-        top: 100%;
-        left: 0;
-        background: #222;
-        border-radius: 6px;
-        overflow: hidden;
-        opacity: 0;
-        transform: translateY(-10px);
-        pointer-events: none;
-        transition: all 0.3s ease;
-        }
-
-
-        .dropdown a {
-        display: block;
-        padding: 10px 20px;
-        color: #fff;
-        text-decoration: none;
-        white-space: nowrap;
-        transition: background 0.3s;
-        }
-
-
-        .dropdown a:hover {
-        background: #4fc3f7;
-        color: #000;
-        }
-
-
-        .nav-item:hover .dropdown,
-        .nav-item .dropdown:hover {
-        opacity: 1;
-        transform: translateY(0);
-        pointer-events: auto;
-        }
-
-
 
         .login {
         cursor: pointer;
@@ -211,9 +134,7 @@
         border: 1px solid #4fc3f7;
         border-radius: 20px;
         transition: all 0.3s ease;
-        color: inherit;
-        text-decoration: none;
-        
+        margin-left: auto;
         }
 
 
@@ -224,7 +145,6 @@
         }
 
 
-        /* ===== SPOLEČNÉ DIVY ===== */
         .section {
         padding: 80px 15%;
         animation: fadeUp 1.2s ease;
