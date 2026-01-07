@@ -1,6 +1,6 @@
 export const load = async ({ fetch, params }) => {
-    // Přidejte /api/ do cesty
-    const res = await fetch(`/courses/${params.uuid}/materials/api`);
+    // Voláme endpoint ve stejné složce
+    const res = await fetch(`/courses/${params.uuid}/materials`);
     if (res.ok) {
         const materials = await res.json();
         return { materials };
