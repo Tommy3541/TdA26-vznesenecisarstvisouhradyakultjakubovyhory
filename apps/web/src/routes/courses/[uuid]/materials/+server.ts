@@ -3,32 +3,29 @@ import { db } from '$lib/server/database';
 
 export async function POST({ request, params }) {
     const formData = await request.formData();
-    const title = formData.get('title') as string;
-    const description = formData.get('description') as string;
-    const url = formData.get('url') as string;
-    const file = formData.get('file') as File;
-
-    // Validace pro test "reject file larger than 30MB"
-    if (file && file.size > 30 * 1024 * 1024) {
-        return new Response(null, { status: 413 });
-    }
-
-    const newMaterial = await db.courseMaterial.create({
+    const material = await db.courseMaterial.create({
         data: {
-            title: title || (file ? file.name : 'Untitled'),
-            description: description || '',
-            type: url ? 'LINK' : 'FILE',
-            url: url || (file ? file.name : ''),
+            title: String(formData.get('title')),
+            description: String(formData.get('description') || ''),
+            url: String(formData.get('url') || (formData.get('file') as File)?.name),
+            type: formData.get('url') ? 'LINK' : 'FILE',
             courseId: params.uuid
         }
     });
 
-    // MAPOVÁNÍ PRO TESTY:
+    // PŘESNÉ MAPOVÁNÍ PRO TESTY
     return json({
-        uuid: newMaterial.id,       // Testy vyžadují klíč 'uuid'
-        name: newMaterial.title,    // Testy vyžadují klíč 'name'
-        description: newMaterial.description,
-        type: url ? 'url' : 'file', // Testy očekávají malá písmena
-        url: newMaterial.url
+        uuid: material.id,        // Test chce 'uuid'
+        name: material.title,     // Test chce 'name'
+        description: material.description,
+        type: material.type === 'LINK' ? 'url' : 'file'
     }, { status: 201 });
+}
+
+export async function GET({ params }) {
+    const materials = await db.courseMaterial.findMany({
+        where: { courseId: params.uuid },
+        orderBy: { createdAt: 'desc' }
+    });
+    return json(materials);
 }
