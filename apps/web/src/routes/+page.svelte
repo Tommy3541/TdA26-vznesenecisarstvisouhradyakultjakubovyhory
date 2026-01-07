@@ -87,7 +87,7 @@
         position: sticky;
         top: 0;
         z-index: 1000;
-        background: #111;
+        background: #1A1A1A;
         color: #fff;
         padding: 0px 30px;
         display: flex;
@@ -107,7 +107,7 @@
         .logo {
         font-size: 24px;
         font-weight: bold;
-        color: #4fc3f7;
+        color: #0070BB;
         cursor: pointer;
         transition: transform 0.3s;
         }
@@ -156,7 +156,7 @@
         .login {
         cursor: pointer;
         padding: 8px 16px;
-        border: 1px solid #4fc3f7;
+        border: 1px solid #91F5AD;
         border-radius: 20px;
         transition: all 0.3s ease;
         margin-left: auto;
@@ -167,7 +167,7 @@
 
 
         .login:hover {
-        background: #4fc3f7;
+        background: #91F5AD;
         color: #000;
         transform: scale(1.05);
         }
@@ -180,22 +180,30 @@
 
 
         .section-quote {
-        background: #fff;
+        background: #0257A5;
         text-align: center;
-        font-size: 28px;
+        font-size: 72px;
         font-weight: bold;
+		padding: 200px 15%;
+		align-items: column;
         }
 
 
         .section-text {
-        background: #eaeaea;
+        background: #0070BB;
         font-size: 18px;
         line-height: 1.7;
+		padding: 180px 15%;
         }
 
+		.bullshit {
+        background: #49B3B4;
+        padding: 50px 40%;
+        color: white;
+        }
 
         .footer {
-        background: #111;
+        background: #1A1A1A;
         color: #bbb;
         text-align: center;
         padding: 50px 20px;
