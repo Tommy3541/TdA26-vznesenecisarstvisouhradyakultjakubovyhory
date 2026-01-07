@@ -1,35 +1,29 @@
-import { json } from '@sveltejs/kit';
-import { db } from '$lib/server/database';
-
-export async function GET({ params }) {
-    const materials = await db.courseMaterial.findMany({
-        where: { courseId: params.uuid },
-        orderBy: { createdAt: 'desc' }
-    });
-    return json(materials);
-}
-
+// Upravte metodu POST v tomto souboru
 export async function POST({ request, params }) {
     const formData = await request.formData();
     const title = formData.get('title') as string;
+    const description = formData.get('description') as string;
     const url = formData.get('url') as string;
     const file = formData.get('file') as File;
 
-    // Ochrana proti velkým souborům pro test
-    if (file && file.size > 30 * 1024 * 1024) {
-        return new Response('File too large', { status: 413 });
-    }
+    if (file && file.size > 30 * 1024 * 1024) return new Response(null, { status: 413 });
 
     const newMaterial = await db.courseMaterial.create({
         data: {
-            title: title || 'Nová položka',
-            description: (formData.get('description') as string) || '',
+            title: title || (file ? file.name : 'Untitled'),
+            description: description || '',
             type: url ? 'LINK' : 'FILE',
             url: url || (file ? file.name : ''),
             courseId: params.uuid
         }
     });
 
-    // TESTY VYŽADUJÍ CELÝ OBJEKT S ID
-    return json(newMaterial, { status: 201 });
+    // TESTY OČEKÁVAJÍ: 'name', 'description' a 'uuid'
+    return json({
+        uuid: newMaterial.id,      // Testy chtějí uuid
+        name: newMaterial.title,   // Testy chtějí name místo title
+        description: newMaterial.description,
+        type: newMaterial.type === 'LINK' ? 'url' : 'file', // Test chce "url" pro LINK
+        url: newMaterial.url
+    }, { status: 201 });
 }
