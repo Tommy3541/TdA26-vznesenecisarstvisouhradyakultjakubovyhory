@@ -26,8 +26,8 @@
             </div>
 
 
-            <div class="login">Přihlásit se</div>
-            </div>
+            <a class="login" href="/login">Přihlásit se</div>
+            </a>
 
             <div class="section section-quote">
             nejaka veta
