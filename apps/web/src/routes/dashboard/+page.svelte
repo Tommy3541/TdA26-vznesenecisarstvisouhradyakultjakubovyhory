@@ -83,11 +83,11 @@
                                 <span class="emoji-icon">📄</span>
                             {/if}
                         </div>
-                        <div class="material-info">
-                            <strong>{material.title}</strong>
+                                                <div class="material-info">
+                            <strong>{material.name}</strong> 
                             <p>{material.description}</p>
-                            {#if material.type === 'LINK'}
-                                <small style="color: blue;">{material.url}</small>
+                            {#if material.type === 'url'}
+                                <small style="color: blue;">{material.content}</small>
                             {/if}
                         </div>
                         <div class="material-actions">
