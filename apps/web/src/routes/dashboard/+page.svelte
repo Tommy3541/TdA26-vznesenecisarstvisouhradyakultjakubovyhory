@@ -77,7 +77,7 @@
                 {#each materials as material}
                     <div class="material-row">
                         <div class="material-icon">
-                            {#if material.type === 'LINK'}
+                            {#if material.type === 'url'}
                                 <img src="https://www.google.com/s2/favicons?domain={material.url}&sz=32" alt="icon" />
                             {:else}
                                 <span class="emoji-icon">📄</span>

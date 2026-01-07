@@ -3,10 +3,15 @@ import { fail } from '@sveltejs/kit';
 import { v4 as uuidv4 } from 'uuid';
 
 export const load = async ({ params }) => {
-    // V URL máš [id], což je UUID kurzu
+    // Pozor: pokud máš složku [id], params.id je správně. 
+    // Pokud ji máš pojmenovanou jinak, změň id na název té složky.
     const course = await db.course.findUnique({ where: { uuid: params.id } });
     const materials = await db.material.findMany({ where: { course_uuid: params.id } });
     
+    if (!course) {
+        return { course: { title: 'Kurz nenalezen' }, materials: [] };
+    }
+
     return { course, materials };
 };
 
@@ -24,10 +29,10 @@ export const actions = {
                 data: {
                     uuid: uuidv4(),
                     course_uuid: params.id,
-                    name: title,           // Změna: title -> name
+                    name: title,
                     description: description,
-                    type: 'file',          // Změna: FILE -> file (podle ENUM v init.ts)
-                    content: file.name,    // Změna: url -> content
+                    type: 'file',
+                    content: file.name, // Tady by se v reálu soubor ukládal na disk/S3
                     mime_type: file.type
                 }
             });
@@ -50,10 +55,10 @@ export const actions = {
                 data: {
                     uuid: uuidv4(),
                     course_uuid: params.id,
-                    name: title,          // Změna: title -> name
+                    name: title,
                     description: description,
-                    type: 'url',          // Změna: LINK -> url
-                    content: url          // Změna: url -> content
+                    type: 'url',
+                    content: url
                 }
             });
             return { success: true };
