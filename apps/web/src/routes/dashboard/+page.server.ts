@@ -2,8 +2,8 @@ import { db } from '$lib/server/database';
 import { fail } from '@sveltejs/kit';
 
 export const load = async ({ params }) => {
-    const course = await db.course.findUnique({ where: { id: params.id } });
-    const materials = await db.courseMaterial.findMany({ where: { courseId: params.id } });
+    const course = await db.course.findUnique({ where: { id: params.uuid } });
+    const materials = await db.courseMaterial.findMany({ where: { courseId: params.uuid } });
     return { course, materials };
 };
 
