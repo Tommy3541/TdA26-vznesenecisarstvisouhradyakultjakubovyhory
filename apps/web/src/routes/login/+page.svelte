@@ -63,7 +63,7 @@
 </div>
 
 <style>
-  /* Umístění loga a odkazu zpět */
+/* Umístění loga a odkazu zpět */
   .header-area {
     position: absolute;
     top: 20px;
@@ -108,16 +108,16 @@
 
   /* Zbytek stylů zůstává stejný */
   .login-wrapper {
+    background-color: #6DD4B1;
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh; 
     font-family: sans-serif;
-    background-color: #f5f7f9; /* Jemné pozadí, aby karta vynikla */
   }
 
   .login-card {
-    background: white;
+    background: #91F5AD;
     padding: 2.5rem;
     border-radius: 12px;
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
@@ -152,24 +152,26 @@
   }
 
   input {
+    background-color: rgb(120, 232, 176);
     width: 100%;
     padding: 0.75rem;
-    border: 1px solid #ddd;
+    border: 1px solid #6DD4B1;
     border-radius: 6px;
     box-sizing: border-box;
     font-size: 1rem;
   }
 
   input:focus {
+    background-color: #7ee8b3;
     outline: none;
-    border-color: #007bff;
+    border-color: #6DD4B1;
     box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.2);
   }
 
   .login-btn {
     width: 100%;
     padding: 0.75rem;
-    background-color: #007bff;
+    background-color: #4eb883;
     color: white;
     border: none;
     border-radius: 6px;
@@ -180,7 +182,7 @@
   }
 
   .login-btn:hover {
-    background-color: #0056b3;
+    background-color: #40976c;
   }
 
   .register-link {
@@ -190,7 +192,7 @@
   }
 
   .register-link a {
-    color: #007bff;
+    color: #40976c;
     text-decoration: none;
     font-weight: 600;
   }
