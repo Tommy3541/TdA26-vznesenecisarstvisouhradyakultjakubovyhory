@@ -4,7 +4,7 @@ import type { LayoutServerLoad } from './$types';
 import { db } from '$lib/server/database'; 
 
 export const load: LayoutServerLoad = async ({ params }) => {
-    const { uuid } = params; // Toto ID musí být UUID
+    const { uuid } = params; // Toto ID musí být UUID, odpovídá složce [uuid]
 
     const course = await db.course.findUnique({
         where: { id: uuid }
@@ -16,7 +16,8 @@ export const load: LayoutServerLoad = async ({ params }) => {
 
     // Načtení podkladů: od nejnovějšího po nejstarší
     const materials = await db.courseMaterial.findMany({
-        where: { courseId: id },
+        // TADY BYLA CHYBA: Musí zde být 'uuid', nikoliv 'id'
+        where: { courseId: uuid }, 
         orderBy: { createdAt: 'desc' } 
     });
 
@@ -25,4 +26,3 @@ export const load: LayoutServerLoad = async ({ params }) => {
         materials
     };
 };
-
