@@ -1,10 +1,9 @@
-import type { PageLoad } from './$types';
-
-export const load: PageLoad = async ({ fetch, params }) => {
-    const res = await fetch(`/api/courses/${params.uuid}`);
+export const load = async ({ fetch, params }) => {
+    // Odstraňte '/api', protože vaše routy jsou přímo v /courses
+    const res = await fetch(`/courses/${params.uuid}/materials`);
     if (res.ok) {
-        const course = await res.json();
-        return { course };
+        const materials = await res.json();
+        return { materials };
     }
-    return { status: 404, error: 'Kurz nenalezen' };
+    return { materials: [] };
 };
