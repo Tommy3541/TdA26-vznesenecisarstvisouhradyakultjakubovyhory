@@ -9,34 +9,10 @@
                 <a class="logo" href="/"><img src="Think-different-Academy_LOGO_erb.png" alt="Logo" class="logomain"></a>
 
                 <div class="nav">
-                    <div class="nav-item">
-                        <span>Kapitola 1</span>
-                        <div class="dropdown">
-                            <a href="#">Podkapitola 1</a>
-                            <a href="#">Podkapitola 2</a>
-                            <a href="#">Podkapitola 3</a>
-                        </div>
-                    </div>
-
-                    <div class="nav-item">
-                        <span>Kapitola 2</span>
-                        <div class="dropdown">
-                            <a href="#">Podkapitola 1</a>
-                            <a href="#">Podkapitola 2</a>
-                            <a href="#">Podkapitola 3</a>
-                        </div>
-                    </div>
-
-                    <div class="nav-item">
-                        <span>Kapitola 3</span>
-                        <div class="dropdown">
-                            <a href="#">Podkapitola 1</a>
-                            <a href="#">Podkapitola 2</a>
-                            <a href="#">Podkapitola 3</a>
-                        </div>
-                    </div>
+                    
                 </div>
             </div>
+            <div class="login">Profil</div>
         </div>
 
         <div class="section section-text">
@@ -220,4 +196,5 @@
         padding: 40px;
         color: #666;
     }
+
 </style>
