@@ -12,6 +12,7 @@
         "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch"
     },
     "dependencies": {
+        "mysql2": "^3.11.0",
         "uuid": "^10.0.0"
     },
     "devDependencies": {
