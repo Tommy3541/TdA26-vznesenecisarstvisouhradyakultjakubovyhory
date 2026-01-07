@@ -4,10 +4,10 @@ import type { LayoutServerLoad } from './$types';
 import { db } from '$lib/server/database'; 
 
 export const load: LayoutServerLoad = async ({ params }) => {
-    const { id } = params; // Toto ID musí být UUID
+    const { uuid } = params; // Toto ID musí být UUID
 
     const course = await db.course.findUnique({
-        where: { id: id }
+        where: { id: uuid }
     });
 
     if (!course) {
@@ -25,3 +25,4 @@ export const load: LayoutServerLoad = async ({ params }) => {
         materials
     };
 };
+
