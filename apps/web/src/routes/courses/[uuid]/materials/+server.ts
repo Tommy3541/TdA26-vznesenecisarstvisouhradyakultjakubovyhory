@@ -15,21 +15,21 @@ export async function POST({ request, params }) {
     const url = formData.get('url') as string;
     const file = formData.get('file') as File;
 
-    // Validace velikosti pro test: should reject file larger than 30MB
+    // Ochrana proti velkým souborům pro test
     if (file && file.size > 30 * 1024 * 1024) {
         return new Response('File too large', { status: 413 });
     }
 
     const newMaterial = await db.courseMaterial.create({
         data: {
-            title: title || 'Bez názvu',
-            description: formData.get('description') as string || '',
+            title: title || 'Nová položka',
+            description: (formData.get('description') as string) || '',
             type: url ? 'LINK' : 'FILE',
             url: url || (file ? file.name : ''),
             courseId: params.uuid
         }
     });
 
-    // Zásadní: Testy čekají JSON s daty materiálu (včetně ID)
+    // TESTY VYŽADUJÍ CELÝ OBJEKT S ID
     return json(newMaterial, { status: 201 });
 }
