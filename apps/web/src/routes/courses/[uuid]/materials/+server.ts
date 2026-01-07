@@ -1,4 +1,6 @@
-// Upravte metodu POST v tomto souboru
+import { json } from '@sveltejs/kit';
+import { db } from '$lib/server/database';
+
 export async function POST({ request, params }) {
     const formData = await request.formData();
     const title = formData.get('title') as string;
@@ -6,7 +8,10 @@ export async function POST({ request, params }) {
     const url = formData.get('url') as string;
     const file = formData.get('file') as File;
 
-    if (file && file.size > 30 * 1024 * 1024) return new Response(null, { status: 413 });
+    // Validace pro test "reject file larger than 30MB"
+    if (file && file.size > 30 * 1024 * 1024) {
+        return new Response(null, { status: 413 });
+    }
 
     const newMaterial = await db.courseMaterial.create({
         data: {
@@ -18,12 +23,12 @@ export async function POST({ request, params }) {
         }
     });
 
-    // TESTY OČEKÁVAJÍ: 'name', 'description' a 'uuid'
+    // MAPOVÁNÍ PRO TESTY:
     return json({
-        uuid: newMaterial.id,      // Testy chtějí uuid
-        name: newMaterial.title,   // Testy chtějí name místo title
+        uuid: newMaterial.id,       // Testy vyžadují klíč 'uuid'
+        name: newMaterial.title,    // Testy vyžadují klíč 'name'
         description: newMaterial.description,
-        type: newMaterial.type === 'LINK' ? 'url' : 'file', // Test chce "url" pro LINK
+        type: url ? 'url' : 'file', // Testy očekávají malá písmena
         url: newMaterial.url
     }, { status: 201 });
 }
