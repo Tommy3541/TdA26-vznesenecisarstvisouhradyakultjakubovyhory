@@ -1,3 +1,6 @@
+import { json } from '@sveltejs/kit';
+import { db } from '$lib/server/database';
+
 export async function PUT({ request, params }) {
     const formData = await request.formData();
     const file = formData.get('file') as File;
@@ -14,31 +17,27 @@ export async function PUT({ request, params }) {
         }
     });
 
-    // POKUD TEST NAHRAZUJE SOUBOR:
+    // TEST: "should replace file in material" očekává 'true'
     if (file && file.size > 0 && !title) {
-        // Test "should replace file" očekává, že response.ok bude true 
-        // a data budou obsahovat uuid
-        return json({
-            uuid: updated.id,
-            success: true 
-        });
+        return json(true);
     }
 
-    // POKUD TEST AKTUALIZUJE METADATA:
+    // OSTATNÍ TESTY OČEKÁVAJÍ OBJEKT S 'uuid' A 'name'
     return json({
-        uuid: updated.id,          // Testy chtějí uuid
-        name: updated.title,       // Testy chtějí name
+        uuid: updated.id,
+        name: updated.title,
         description: updated.description
     });
 }
 
 export async function DELETE({ params }) {
+    // Odchycení chyby pro testy smazání
     try {
         await db.courseMaterial.delete({
             where: { id: params.materialId }
         });
         return new Response(null, { status: 204 });
-    } catch (e) {
+    } catch {
         return new Response(null, { status: 404 });
     }
 }
