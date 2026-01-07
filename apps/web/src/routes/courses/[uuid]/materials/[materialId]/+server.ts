@@ -1,5 +1,9 @@
+
+import { json } from '@sveltejs/kit';
+import { db } from '$lib/server/database';
+
 export async function PUT({ request, params }) {
-  const contentType = request.headers.get('content-type') || '';
+  const contentType = request.headers.get('content-type') ?? '';
   let data: any = {};
   let file: File | null = null;
 
@@ -32,4 +36,12 @@ export async function PUT({ request, params }) {
       ? { url: updated.url }
       : { fileUrl: updated.fileUrl, mimeType: updated.mimeType })
   });
+}
+
+export async function DELETE({ params }) {
+  await db.courseMaterial.delete({
+    where: { id: params.materialId }
+  });
+
+  return new Response(null, { status: 204 });
 }
