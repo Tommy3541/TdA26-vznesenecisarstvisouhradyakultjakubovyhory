@@ -8,44 +8,42 @@
 		users = await response.json();
 	});
 </script>
-	<div class="wrapper2">
-        <div class="wrapper1">
-            <div class="menu">
+
+<div class="wrapper2">
+    <div class="wrapper1">
+        <div class="menu">
             <div class="menu-left">
-            <div class="logo"><img src="Think-different-Academy_LOGO_erb.png" class="logomain"></div>
+                <div class="logo">
+                    <img src="Think-different-Academy_LOGO_erb.png" alt="Logo" class="logomain">
+                </div>
 
-            <div class="nav">
-            <div class="nav-item" on:click={() => goto('/courses')}>
-            <span>Kapitola 1</span>
-            </div>
-            </div>
+                <div class="nav">
+                    <a href="/courses" class="nav-item">
+                        <span>Kapitola 1</span>
+                    </a>
 
-            <div class="nav-item">
-            <span>Kapitola 2</span>
-            </div>
-            </div>
-
-
-            <a class="login">Přihlásit se</a>
-            </div>
-
-            <div class="section section-quote">
+                    <a href="/dashboard" class="nav-item">
+                        <span>Kapitola 2</span>
+                    </a>
+                </div>
+            </div> <a href="/login" class="login">Přihlásit se</a>
+        </div> <div class="section section-quote">
             nejaka veta
-            </div>
+        </div>
 
-            <div class="section section-text">
+        <div class="section section-text">
             <p>
-            nejakej odstavec
+                nejakej odstavec
             </p>
-            </div>
+        </div>
 
-            <div class="footer">
+        <div class="footer">
             <p>Kontakt: info@example.com</p>
             <p>Adresa: Ulice 123, 100 00 Praha</p>
             <p>&copy; 2025 Moje Webová Stránka</p>
-            </div>
         </div>
     </div>
+</div>
 <style>
 		* {
         box-sizing: border-box;
@@ -119,6 +117,8 @@
         padding: 10px 5px;
         cursor: pointer;
         pointer-events: none;
+        text-decoration: none; 
+        color: inherit;
         }
 
 
@@ -135,6 +135,9 @@
         border-radius: 20px;
         transition: all 0.3s ease;
         margin-left: auto;
+        text-decoration: none; 
+        color: inherit;       
+        display: inline-block;
         }
 
 
