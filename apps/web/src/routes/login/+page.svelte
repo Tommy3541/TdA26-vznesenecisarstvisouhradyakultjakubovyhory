@@ -103,7 +103,7 @@
   }
 
   .back-link:hover {
-    color: #007bff;
+    color: #40976c;
   }
 
   /* Zbytek stylů zůstává stejný */
@@ -210,3 +210,4 @@
     border: 1px solid #f5c6cb;
   }
 </style>
+
