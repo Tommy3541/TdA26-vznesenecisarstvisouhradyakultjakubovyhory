@@ -14,15 +14,18 @@ export async function PUT({ request, params }) {
         }
     });
 
-    // Pokud test nahrává nový soubor, očekává v JSONu hodnotu 'true'
+
     if (file && file.size > 0 && !title) {
         return json(true); //
     }
-
+    
     return json({
-        uuid: updated.id,
-        name: updated.title
-    });
+      uuid: updated.id,
+      name: updated.title,
+      description: updated.description,
+      type: updated.type === 'LINK' ? 'url' : 'file'
+});
+    
 }
 
 export async function DELETE({ params }) {
