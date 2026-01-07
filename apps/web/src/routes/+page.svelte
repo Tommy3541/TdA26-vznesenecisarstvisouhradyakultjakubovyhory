@@ -28,13 +28,37 @@
                 </div>
             </div> <a href="/login" class="login">Přihlásit se</a>
         </div> <div class="section section-quote">
-            nejaka veta
+            <img src="Think-different-Academy_LOGO_bily.png">
+            <h1 class="voiceline">Think different</h1>
+            <h4 class="voiceline">Academy</h4>
         </div>
 
         <div class="section section-text">
-            <p>
-                nejakej odstavec
+        	<p class="odstavec">
+            Think different Academy je nezisková organizace zaměřená na rozvoj kritického a kreativního myšlení
+            studentů i široké veřejnosti.
+            Aktuálně vyvíjíme vzdělávací platformu, jejímž cílem je ukázat, že učení může probíhat bez úmorného
+            pročítání odborných textů a s důrazem na moderní, interaktivní přístup.
+            Naším záměrem je také usnadnit a zpříjemnit práci lektorům, kteří chtějí vzdělávat online,
+            a nabídnout jim nástroje, díky nimž mohou své znalosti předávat efektivněji a s větším dopadem.
             </p>
+        </div>
+
+		<div class="bullshit">
+            <br><br><br><h1>Vzdělávání, které tě naučí myslet, ne jen pamatovat.</h1><br><br>
+            V Think Different Academy věříme, že tradiční školství už nestačí. Svět se mění rychleji než kdy dřív a my jsme tu proto, abychom ti pomohli udržet krok. Naším posláním je rozvíjet u studentů dovednosti 21. století: kreativní řešení problémů, kritické myšlení a technologickou gramotnost. Nejsme jen škola, jsme komunita inovátorů.
+            <br><br><br><br><br><br><h1>Naše pilíře</h1><br><br>
+            Praxe nad teorii: Žádné biflování z učebnic. U nás pracuješ na reálných projektech, které mají smysl.<br>
+            Individuální přístup: Každý má jiný talent. Naši mentoři ti pomohou najít ten tvůj a rozvinout ho na maximum.<br>
+            Technologie a AI: Naučíme tě, jak používat nejmodernější nástroje k tomu, abys byl efektivnější a kreativnější.<br>
+            <br><br><br><br><br><br><h1>Výzva k akci</h1><br><br>
+            Změň svou budoucnost ještě dnes. Přidej se k desítkám studentů, kteří už začali svou cestu v Think Different Academy. První krok začíná tvou registrací.
+            V Think Different Academy nepoužíváme učebnice z minulého století. Naše výuka probíhá formou workshopů, simulací reálných projektů a diskusí. Zaměřujeme se na to, co umělá inteligence (AI) nenahradí: empatii, kreativitu, strategické rozhodování a schopnost spolupracovat v týmu. Připravujeme tě na kariéru, která možná ještě ani neexistuje.
+            <br><br><br><br><br><br><h1>Co se u nás naučíte?</h1><br><br>
+            Kritické myšlení: Jak filtrovat informace v době deepfakes.<br>
+            Project Management: Jak dotáhnout nápad od skici až po funkční prototyp.<br>
+            Prezentační dovednosti: Jak prodat svůj projekt investorům i veřejnosti.<br>
+            Technologický rozhled: Jak využít AI jako svého nejlepšího parťáka.<br>
         </div>
 
         <div class="footer">
@@ -184,6 +208,15 @@
 
         .logomain{
             height: 50px;
+        }
+
+        .voiceline {
+            color: white;
+        }
+
+        .odstavec {
+            color: white;
+            text-align: center;
         }
 
         /* ===== ANIMACE ===== */
