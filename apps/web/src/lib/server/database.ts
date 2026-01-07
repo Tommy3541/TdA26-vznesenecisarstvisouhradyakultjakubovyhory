@@ -1,4 +1,4 @@
-import { pool } from "./index.js";
+import { pool } from "./db";
 
 export const db = {
     course: {
