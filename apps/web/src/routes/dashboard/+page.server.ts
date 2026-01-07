@@ -2,8 +2,12 @@ import { db } from '$lib/server/database';
 import { fail } from '@sveltejs/kit';
 
 export const load = async ({ params }) => {
+    // Změna params.id na params.uuid
     const course = await db.course.findUnique({ where: { id: params.uuid } });
-    const materials = await db.courseMaterial.findMany({ where: { courseId: params.uuid } });
+    const materials = await db.courseMaterial.findMany({ 
+        where: { courseId: params.uuid },
+        orderBy: { createdAt: 'desc' } // Pomůže splnit test na řazení od nejnovějšího
+    });
     return { course, materials };
 };
 
@@ -16,13 +20,14 @@ export const actions = {
 
         if (!title || !file) return fail(400, { message: 'Název a soubor jsou povinné' });
 
+        // Změna params.id na params.uuid
         await db.courseMaterial.create({
             data: {
                 title,
                 description,
                 type: 'FILE',
-                url: file.name, // V reálné aplikaci bys zde soubor uložil na disk/S3
-                courseId: params.id
+                url: file.name, 
+                courseId: params.uuid // OPRAVENO
             }
         });
     },
@@ -34,13 +39,14 @@ export const actions = {
 
         if (!title || !url) return fail(400, { message: 'Název a URL jsou povinné' });
 
+        // Změna params.id na params.uuid
         await db.courseMaterial.create({
             data: {
                 title,
                 url,
                 description,
                 type: 'LINK',
-                courseId: params.id
+                courseId: params.uuid // OPRAVENO
             }
         });
     }
