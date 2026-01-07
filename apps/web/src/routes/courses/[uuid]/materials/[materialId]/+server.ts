@@ -1,34 +1,35 @@
-import { json } from '@sveltejs/kit';
-import { db } from '$lib/server/database';
-
 export async function PUT({ request, params }) {
-    const formData = await request.formData();
-    const file = formData.get('file') as File;
-    const title = formData.get('title') as string;
+  const contentType = request.headers.get('content-type') || '';
+  let data: any = {};
+  let file: File | null = null;
 
-    const updated = await db.courseMaterial.update({
-        where: { id: params.materialId },
-        data: {
-            title: title || undefined,
-            url: (file && file.size > 0) ? file.name : undefined
-        }
-    });
+  if (contentType.includes('multipart/form-data')) {
+    const form = await request.formData();
+    data.name = form.get('name');
+    data.description = form.get('description');
+    file = form.get('file') as File;
+  } else {
+    data = await request.json();
+  }
 
-
-    if (file && file.size > 0 && !title) {
-        return json(true); //
+  const updated = await db.courseMaterial.update({
+    where: { id: params.materialId },
+    data: {
+      name: data.name ?? undefined,
+      description: data.description ?? undefined,
+      ...(file && file.size > 0
+        ? { fileUrl: `/uploads/${file.name}`, mimeType: file.type }
+        : {})
     }
-    
-    return json({
-      uuid: updated.id,
-      name: updated.title,
-      description: updated.description,
-      type: updated.type === 'LINK' ? 'url' : 'file'
-});
-    
-}
+  });
 
-export async function DELETE({ params }) {
-    await db.courseMaterial.delete({ where: { id: params.materialId } });
-    return new Response(null, { status: 204 });
+  return json({
+    uuid: updated.id,
+    type: updated.type === 'URL' ? 'url' : 'file',
+    name: updated.name,
+    description: updated.description,
+    ...(updated.type === 'URL'
+      ? { url: updated.url }
+      : { fileUrl: updated.fileUrl, mimeType: updated.mimeType })
+  });
 }
