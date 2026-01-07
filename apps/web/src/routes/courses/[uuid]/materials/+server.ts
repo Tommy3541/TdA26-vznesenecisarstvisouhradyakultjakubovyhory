@@ -38,28 +38,28 @@ export async function POST({ request, params }) {
 
   const uuid = randomUUID();
 
-  // URL MATERIAL
-  if (data.type === 'url') {
-    const m = await db.courseMaterial.create({
-      data: {
-        id: uuid,
-        courseId: params.uuid,
-        type: 'URL',
-        name: data.name,
-        description: data.description ?? '',
-        url: data.url,
-        createdAt: new Date()
-      }
-    });
+if (data.type === 'url') {
+  const m = await db.courseMaterial.create({
+    data: {
+      id: uuid,
+      courseId: params.uuid,
+      type: 'URL',
+      name: data.name,
+      description: data.description ?? '', // 👈 MUSÍ TU BÝT
+      url: data.url,
+      createdAt: new Date()
+    }
+  });
 
-    return json({
-      uuid: m.id,
-      type: 'url',
-      name: m.name,
-      description: m.description,
-      url: m.url
-    }, { status: 201 });
-  }
+  return json({
+    uuid: m.id,
+    type: 'url',
+    name: m.name,
+    description: m.description, // 👈 MUSÍ SE VRÁTIT
+    url: m.url
+  }, { status: 201 });
+}
+
 
   // FILE MATERIAL
   if (!file || file.size === 0) throw error(400, 'File missing');
