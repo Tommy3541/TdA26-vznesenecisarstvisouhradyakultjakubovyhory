@@ -2,7 +2,7 @@ import type { PageLoad } from './$types';
 
 export const load: PageLoad = async ({ fetch }) => {
     try {
-        const response = await fetch('/api/courses');
+        const response = await fetch('/courses');
         
         if (!response.ok) {
             console.error("API vrátilo chybu:", response.status);
@@ -19,4 +19,5 @@ export const load: PageLoad = async ({ fetch }) => {
         console.error("Chyba při načítání kurzů:", err);
         return { courses: [] };
     }
+
 };
