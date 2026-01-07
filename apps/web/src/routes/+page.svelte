@@ -15,7 +15,7 @@
             <div class="logo"><img src="Think-different-Academy_LOGO_erb.png" class="logomain"></div>
 
             <div class="nav">
-            <div class="nav-item">
+            <div class="nav-item" on:click={() => goto('/courses')}>
             <span>Kapitola 1</span>
             </div>
             </div>
