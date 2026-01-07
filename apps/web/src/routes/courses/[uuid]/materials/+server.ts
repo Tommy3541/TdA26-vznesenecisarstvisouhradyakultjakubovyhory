@@ -1,26 +1,3 @@
-import { json, error } from '@sveltejs/kit';
-import { db } from '$lib/server/database';
-import { randomUUID } from 'crypto';
-
-/* ===================== GET ===================== */
-export async function GET({ params }) {
-  const materials = await db.courseMaterial.findMany({
-    where: { courseId: params.uuid },
-    orderBy: { createdAt: 'desc' }
-  });
-
-  return json(materials.map(m => ({
-    uuid: m.id,
-    type: m.type === 'URL' ? 'url' : 'file',
-    name: m.name,
-    description: m.description,
-    ...(m.type === 'URL'
-      ? { url: m.url }
-      : { fileUrl: m.fileUrl, mimeType: m.mimeType })
-  })));
-}
-
-/* ===================== POST ===================== */
 export async function POST({ request, params }) {
   const contentType = request.headers.get('content-type') ?? '';
   let data: any = {};
@@ -28,38 +5,42 @@ export async function POST({ request, params }) {
 
   if (contentType.includes('multipart/form-data')) {
     const form = await request.formData();
-    data.type = form.get('type');
-    data.name = form.get('name');
-    data.description = form.get('description');
+    data.type = (form.get('type') as string) || '';
+    data.name = (form.get('name') as string) || '';
+    data.description = (form.get('description') as string) || '';
     file = form.get('file') as File;
   } else {
     data = await request.json();
   }
 
+  // validace
+  if (!data.name) throw error(400, 'Missing name');
+  if (!data.type) throw error(400, 'Missing type');
+
   const uuid = randomUUID();
 
-if (data.type === 'url') {
-  const m = await db.courseMaterial.create({
-    data: {
-      id: uuid,
-      courseId: params.uuid,
-      type: 'URL',
-      name: data.name,
-      description: data.description ?? '', // 👈 MUSÍ TU BÝT
-      url: data.url,
-      createdAt: new Date()
-    }
-  });
+  if (data.type === 'url') {
+    if (!data.url) throw error(400, 'Missing url');
+    const m = await db.courseMaterial.create({
+      data: {
+        id: uuid,
+        courseId: params.uuid,
+        type: 'URL',
+        name: data.name,
+        description: data.description ?? '',
+        url: data.url,
+        createdAt: new Date()
+      }
+    });
 
-  return json({
-    uuid: m.id,
-    type: 'url',
-    name: m.name,
-    description: m.description, // 👈 MUSÍ SE VRÁTIT
-    url: m.url
-  }, { status: 201 });
-}
-
+    return json({
+      uuid: m.id,
+      type: 'url',
+      name: m.name,
+      description: m.description,
+      url: m.url
+    }, { status: 201 });
+  }
 
   // FILE MATERIAL
   if (!file || file.size === 0) throw error(400, 'File missing');
