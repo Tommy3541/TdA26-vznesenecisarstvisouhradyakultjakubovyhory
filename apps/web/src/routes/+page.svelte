@@ -109,16 +109,17 @@
         position: relative;
         padding: 0 22px;
         cursor: pointer;
+        text-decoration: none; 
+        color: #ffffff      
+        
         }
 
 
         .nav-item > span {
         display: block;
-        padding: 10px 5px;
-        cursor: pointer;
-        pointer-events: none;
-        text-decoration: none; 
-        color: inherit;
+    padding: 10px 5px;
+    cursor: pointer;
+    pointer-events: none;
         }
 
 
