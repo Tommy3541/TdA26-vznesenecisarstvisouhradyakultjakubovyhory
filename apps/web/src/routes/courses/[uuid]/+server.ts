@@ -3,6 +3,7 @@ import { db } from '$lib/server/database';
 
 /* ===================== GET COURSE DETAIL ===================== */
 export async function GET({ params }) {
+  console.log('🔥 COURSE DETAIL HIT');
   const course = await db.course.findUnique({
     where: { id: params.uuid },
     include: {
