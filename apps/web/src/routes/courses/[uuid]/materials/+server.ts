@@ -1,6 +1,8 @@
-import { json, error } from '@sveltejs/kit';
+import { json } from '@sveltejs/kit';
 import { db } from '$lib/server/database';
 import { randomUUID } from 'crypto';
+import { writeFileSync, mkdirSync, existsSync } from 'fs';
+import { join } from 'path';
 
 export async function POST({ request, params }) {
     try {
@@ -8,96 +10,75 @@ export async function POST({ request, params }) {
         let data: any = {};
         let file: File | null = null;
 
-        // 1. Parse Request Data
         if (contentType.includes('multipart/form-data')) {
             const form = await request.formData();
-            data.type = (form.get('type') as string) || '';
-            data.name = (form.get('name') as string) || '';
-            data.description = (form.get('description') as string) || '';
-            data.url = (form.get('url') as string) || '';
+            data.type = form.get('type') as string;
+            data.name = form.get('name') as string;
+            data.description = form.get('description') as string;
+            data.url = form.get('url') as string;
             file = form.get('file') as File | null;
         } else {
             data = await request.json();
         }
 
-        console.log('Payload received:', data);
-
-        // 2. Common Validation
-        if (!data.name) throw error(400, 'Missing name');
-        if (!data.type) throw error(400, 'Missing type');
+        if (!data.name) return json({ error: 'Missing name' }, { status: 400 });
+        if (!data.type) return json({ error: 'Missing type' }, { status: 400 });
 
         const uuid = randomUUID();
+        const courseId = params.uuid;
 
-        // 3. Handle URL Material
         if (data.type === 'url') {
-            if (!data.url) throw error(400, 'Missing url');
-            
+            if (!data.url) return json({ error: 'Missing url' }, { status: 400 });
+
             const m = await db.courseMaterial.create({
                 data: {
                     id: uuid,
-                    courseId: params.uuid,
+                    courseId: courseId,
                     type: 'URL',
                     name: data.name,
                     description: data.description ?? '',
                     url: data.url,
-                    createdAt: new Date()
                 }
             });
 
-            return json({
-                uuid: m.id,
-                type: 'url',
-                name: m.name,
-                description: m.description,
-                url: m.url
-            }, { status: 201 });
+            return json(m, { status: 201 });
         }
 
-        // 4. Handle FILE Material
-        if (data.type === 'file') {
-            if (!file || file.size === 0) throw error(400, 'File missing');
-            if (file.size > 30 * 1024 * 1024) throw error(400, 'File too large');
-
-            const allowed = [
-                'application/pdf', 'image/png', 'image/jpeg', 'image/gif',
-                'text/plain', 'audio/mpeg', 'video/mp4',
-                'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
-            ];
+        if (data.type === 'file' || data.type === 'FILE') {
+            if (!file || file.size === 0) return json({ error: 'File missing' }, { status: 400 });
             
-            if (!allowed.includes(file.type)) throw error(400, 'Unsupported file type');
+            if (file.size > 30 * 1024 * 1024) return json({ error: 'File too large' }, { status: 400 });
 
             const filename = `${uuid}-${file.name}`;
+            const uploadDir = join(process.cwd(), 'static', 'uploads');
+
+            if (!existsSync(uploadDir)) {
+                mkdirSync(uploadDir, { recursive: true });
+            }
+
+            const filePath = join(uploadDir, filename);
+            const arrayBuffer = await file.arrayBuffer();
+            writeFileSync(filePath, Buffer.from(arrayBuffer));
 
             const m = await db.courseMaterial.create({
                 data: {
                     id: uuid,
-                    courseId: params.uuid,
+                    courseId: courseId,
                     type: 'FILE',
                     name: data.name,
                     description: data.description ?? '',
                     fileUrl: `/uploads/${filename}`,
                     mimeType: file.type,
-                    createdAt: new Date()
                 }
             });
 
-            return json({
-                uuid: m.id,
-                type: 'file',
-                name: m.name,
-                description: m.description,
-                fileUrl: m.fileUrl,
-                mimeType: m.mimeType
-            }, { status: 201 });
+            return json(m, { status: 201 });
         }
 
-        throw error(400, 'Invalid material type');
+        return json({ error: 'Invalid material type' }, { status: 400 });
 
     } catch (err: any) {
         console.error('API Error:', err);
-        // If it's already a SvelteKit error, rethrow it
-        if (err.status) throw err;
-        // Otherwise, return a 500 to prevent 502 Bad Gateway
         return json({ error: err.message || 'Internal Server Error' }, { status: 500 });
     }
 }
