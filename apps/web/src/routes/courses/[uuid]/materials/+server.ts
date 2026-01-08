@@ -3,7 +3,6 @@ import { db } from '$lib/server/database';
 import { randomUUID } from 'crypto';
 
 export async function POST({ request, params }) {
-    console.log('Payload:', data);
     const contentType = request.headers.get('content-type') ?? '';
     let data: any = {};
     let file: File | null = null;
@@ -19,6 +18,8 @@ export async function POST({ request, params }) {
     } else {
         data = await request.json();
     }
+    
+    console.log('Payload:', data);
 
     // validace
     if (!data.name) throw error(400, 'Missing name');
