@@ -17,12 +17,12 @@ export const db = {
         },
         // TATO ČÁST CHYBĚLA A ZPŮSOBOVALA CHYBU 500
         create: async ({ data }: any) => {
-            const newMaterial = { 
-                ...data, 
-                id: Math.random().toString(36).substring(7) 
-            };
-            materials.push(newMaterial);
-            return newMaterial;
-        }
+    const newMaterial = { 
+        ...data, 
+        id: data.id || Math.random().toString(36).substring(7) 
+    };
+    materials.push(newMaterial);
+    return newMaterial;
+}
     }
 };
