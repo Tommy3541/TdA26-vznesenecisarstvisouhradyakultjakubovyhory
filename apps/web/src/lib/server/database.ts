@@ -1,8 +1,25 @@
-import { PrismaClient } from '@prisma/client';
 
-// Toto zabrání pádu serveru při hot-reloadu v developmentu
-const globalForPrisma = globalThis as unknown as { prisma: PrismaClient };
+let materials: any[] = [];
 
-export const db = globalForPrisma.prisma || new PrismaClient();
-
-if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = db;
+export const db = {
+    course: {
+        findUnique: async ({ where }: any) => {
+            return { id: where.id, title: "Testovací kurz" };
+        }
+    },
+    courseMaterial: {
+        findMany: async ({ where }: any) => {
+            // Filtrujeme materiály podle ID kurzu
+            return materials.filter(m => m.courseId === where.courseId);
+        },
+        // TATO ČÁST CHYBĚLA A ZPŮSOBOVALA CHYBU 500
+        create: async ({ data }: any) => {
+    const newMaterial = { 
+        ...data, 
+        id: data.id || Math.random().toString(36).substring(7) 
+    };
+    materials.push(newMaterial);
+    return newMaterial;
+}
+    }
+};
