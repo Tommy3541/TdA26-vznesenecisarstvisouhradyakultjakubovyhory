@@ -1,5 +1,5 @@
 import { json, error } from '@sveltejs/kit';
-import { db } from '$lib/apps/web/src/lib/server/database.ts';
+import { db } from '$lib/server/database';
 import { randomUUID } from 'crypto';
 
 export async function POST({ request, params }) {
