@@ -2,9 +2,8 @@ import { json, error } from '@sveltejs/kit';
 import { db } from '$lib/server/database';
 import { randomUUID } from 'crypto';
 
-console.log('Payload:', data)
-
 export async function POST({ request, params }) {
+    console.log('Payload:', data);
     const contentType = request.headers.get('content-type') ?? '';
     let data: any = {};
     let file: File | null = null;
