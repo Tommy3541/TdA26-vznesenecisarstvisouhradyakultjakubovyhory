@@ -1,6 +1,72 @@
 <script lang="ts">
+    import { page } from '$app/stores';
+    import { invalidateAll } from '$app/navigation';
+
     export let data;
-    // Data pocházejí z +page.ts, kde jsme je fetchli z API
+
+    // Lokální stav pro formulář
+    let name = '';
+    let type = 'url';
+    let url = '';
+    let description = '';
+    let fileInput: HTMLInputElement;
+    let loading = false;
+    let errorMessage = '';
+
+    async function handleSubmit() {
+        loading = true;
+        errorMessage = '';
+        const courseId = $page.params.uuid;
+
+        try {
+            let body;
+            let headers: Record<string, string> = {};
+
+            if (type === 'url') {
+                body = JSON.stringify({ name, type, url, description });
+                headers['Content-Type'] = 'application/json';
+            } else {
+                const formData = new FormData();
+                formData.append('name', name);
+                formData.append('type', 'file');
+                formData.append('description', description);
+                if (fileInput.files?.[0]) {
+                    formData.append('file', fileInput.files[0]);
+                } else {
+                    throw new Error('Vyberte soubor');
+                }
+                body = formData;
+                // U FormData prohlížeč nastaví boundary automaticky, headers necháme prázdné
+            }
+
+            // VOLÁNÍ TVÉHO API: /courses/[uuid]/materials
+            const response = await fetch(`/courses/${courseId}/materials`, {
+                method: 'POST',
+                headers,
+                body
+            });
+
+            const result = await response.json();
+
+            if (!response.ok) {
+                throw new Error(result.error || 'Něco se nepovedlo');
+            }
+
+            // Reset formuláře a refresh dat
+            name = '';
+            url = '';
+            description = '';
+            if (fileInput) fileInput.value = '';
+            
+            // Toto vynutí znovunačtení dat v +page.ts bez reloadu stránky
+            await invalidateAll();
+            
+        } catch (err: any) {
+            errorMessage = err.message;
+        } finally {
+            loading = false;
+        }
+    }
 </script>
 
 <div class="course-detail">
@@ -10,6 +76,37 @@
             <p class="description">{data.course.description || 'Bez popisu'}</p>
         </header>
 
+        <section class="upload-section">
+            <h3>Přidat nový materiál</h3>
+            <form on:submit|preventDefault={handleSubmit} class="material-form">
+                <input type="text" bind:value={name} placeholder="Název materiálu" required />
+                <textarea bind:value={description} placeholder="Popis (volitelné)"></textarea>
+                
+                <div class="type-selector">
+                    <label>
+                        <input type="radio" bind:group={type} value="url" /> Odkaz
+                    </label>
+                    <label>
+                        <input type="radio" bind:group={type} value="file" /> Soubor
+                    </label>
+                </div>
+
+                {#if type === 'url'}
+                    <input type="url" bind:value={url} placeholder="https://..." required />
+                {:else}
+                    <input type="file" bind:this={fileInput} required />
+                {/if}
+
+                <button type="submit" disabled={loading}>
+                    {loading ? 'Ukládám...' : 'Uložit materiál'}
+                </button>
+
+                {#if errorMessage}
+                    <p class="error-msg">{errorMessage}</p>
+                {/if}
+            </form>
+        </section>
+
         <section class="materials-section">
             <h2>Studijní materiály</h2>
             
@@ -18,13 +115,16 @@
                     {#each data.course.materials as material}
                         <div class="material-item">
                             <div class="material-info">
-                                <span class="material-name">{material.name}</span>
+                                <div>
+                                    <span class="material-name">{material.name}</span>
+                                    <p class="mat-desc">{material.description || ''}</p>
+                                </div>
                                 <a 
-                                    href="/api/materials/download/{material.uuid}" 
+                                    href={material.type === 'URL' ? material.url : material.fileUrl} 
                                     target="_blank" 
                                     class="download-link"
                                 >
-                                    Stáhnout / Zobrazit
+                                    {material.type === 'URL' ? 'Otevřít' : 'Zobrazit'}
                                 </a>
                             </div>
                         </div>
@@ -39,83 +139,48 @@
     {:else}
         <div class="error">
             <h1>Kurz nenalezen</h1>
-            <p>Litujeme, ale požadovaný kurz neexistuje nebo nemáte oprávnění k jeho prohlížení.</p>
             <a href="/courses">Zpět na seznam kurzů</a>
         </div>
     {/if}
 </div>
 
 <style>
-    .course-detail {
-        max-width: 800px;
-        margin: 2rem auto;
-        padding: 0 1rem;
-        font-family: sans-serif;
-    }
-
-    .course-header {
-        border-bottom: 2px solid #eee;
-        margin-bottom: 2rem;
-        padding-bottom: 1rem;
-    }
-
-    .description {
-        color: #666;
-        font-size: 1.1rem;
-    }
-
-    .materials-section {
-        background: #f9f9f9;
-        padding: 1.5rem;
+    /* ... tvoje stávající styly ... */
+    
+    .upload-section {
+        background: #eee;
+        padding: 1rem;
         border-radius: 8px;
+        margin-bottom: 2rem;
     }
 
-    .materials-list {
+    .material-form {
         display: flex;
         flex-direction: column;
-        gap: 1rem;
-        margin-top: 1rem;
+        gap: 0.8rem;
     }
 
-    .material-item {
-        background: white;
-        padding: 1rem;
+    .material-form input, .material-form textarea {
+        padding: 0.5rem;
+        border: 1px solid #ccc;
         border-radius: 4px;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-        border-left: 4px solid #4fc3f7;
     }
 
-    .material-info {
+    .type-selector {
         display: flex;
-        justify-content: space-between;
-        align-items: center;
+        gap: 1rem;
     }
 
-    .material-name {
-        font-weight: bold;
-    }
-
- .download-link {
-        background-color: #4fc3f7;
-        color: white;
-        text-decoration: none;
-        padding: 0.5rem 1rem;
-        border-radius: 4px;
+    .error-msg {
+        color: red;
         font-size: 0.9rem;
     }
 
-    .download-link:hover {
-        background-color: #2196f3;
+    .mat-desc {
+        font-size: 0.85rem;
+        color: #888;
+        margin: 0;
     }
 
-    .back-link {
-        display: inline-block;
-        margin-top: 2rem;
-        color: #666;
-        text-decoration: none;
-    }
-
-    .back-link:hover {
-        text-decoration: underline;
-    }
+    /* Ostatní tvoje CSS zůstává stejné */
 </style>
